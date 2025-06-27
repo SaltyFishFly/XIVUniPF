@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XIVUniPF", "XIVUniPF\XIVUniPF.csproj", "{AAEAB590-F0EA-4B86-A38C-49228CCEE217}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8D9267C6-5C14-4CC9-B09F-1A39FDB724EE} = {8D9267C6-5C14-4CC9-B09F-1A39FDB724EE}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XIVUniPF-Core", "XIVUniPF-Core\XIVUniPF-Core.csproj", "{8D9267C6-5C14-4CC9-B09F-1A39FDB724EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAEAB590-F0EA-4B86-A38C-49228CCEE217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAEAB590-F0EA-4B86-A38C-49228CCEE217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAEAB590-F0EA-4B86-A38C-49228CCEE217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAEAB590-F0EA-4B86-A38C-49228CCEE217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D9267C6-5C14-4CC9-B09F-1A39FDB724EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D9267C6-5C14-4CC9-B09F-1A39FDB724EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D9267C6-5C14-4CC9-B09F-1A39FDB724EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D9267C6-5C14-4CC9-B09F-1A39FDB724EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BDD5D1AC-DA60-49D6-8B6A-172F4B4BAF0C}
+	EndGlobalSection
+EndGlobal

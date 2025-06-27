@@ -1,0 +1,228 @@
+﻿<ui:FluentWindow
+    x:Class="XIVUniPF.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:local="clr-namespace:XIVUniPF"
+    xmlns:vm="clr-namespace:XIVUniPF.ViewModels"
+    xmlns:conv="clr-namespace:XIVUniPF.Converters"
+    xmlns:core="clr-namespace:XIVUniPF_Core;assembly=XIVUniPF-Core"
+    xmlns:classes="clr-namespace:XIVUniPF.Classes"
+    mc:Ignorable="d"
+    Title="XIVUniPF"
+    Width="1300"
+    Height="800"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    ExtendsContentIntoTitleBar="True"
+    WindowBackdropType="Mica"
+    WindowCornerPreference="Default"
+    WindowStartupLocation="CenterScreen">
+    
+    <ui:FluentWindow.DataContext>
+        <vm:MainViewModel/>
+    </ui:FluentWindow.DataContext>
+    <ui:FluentWindow.Resources>
+        <conv:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
+    </ui:FluentWindow.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ui:TitleBar
+            Grid.Column="0"
+            Grid.Row="0"
+            x:Name="TitleBar"
+            Title="XIVUniPF"
+            CloseWindowByDoubleClickOnIcon="True">
+        </ui:TitleBar>
+        <!-- Toolbar -->
+        <DockPanel
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="{StaticResource ToolbarPanelMargin}"
+            LastChildFill="False">
+            <!-- 刷新按钮 -->
+            <ui:Button
+                DockPanel.Dock="Left"
+                IsEnabled="{Binding Path=Loaded}"
+                Content="刷新"
+                Click="Refresh_Button_Click">
+                <ui:Button.Icon>
+                    <!-- 0xE72C 刷新图标 -->
+                    <ui:FontIcon
+                        FontFamily="./Assets/#Segoe Fluent Icons"
+                        Glyph="&#xE72C;"
+                        FontSize="14"/>
+                </ui:Button.Icon>
+            </ui:Button>
+            <Separator
+                Margin="8,0,8,0"
+                DockPanel.Dock="Left"/>
+            <!-- 排序依据 -->
+            <ComboBox
+                DockPanel.Dock="Left"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                SelectedItem="{Binding Path=SelectedSort}"
+                Visibility="Hidden">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <ui:TextBlock
+                            Text="{Binding Path=Name}"
+                            FontTypography="Body"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <!-- 后退 -->
+            <ui:Button
+                DockPanel.Dock="Right"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                IsEnabled="{Binding Path=Loaded}"
+                Content="下一页"
+                Click="Next_Button_Click">
+                <ui:Button.Icon>
+                    <ui:SymbolIcon
+                        Symbol="ArrowNext24"/>
+                </ui:Button.Icon>
+            </ui:Button>
+            <!-- 页码 -->
+            <ui:TextBlock
+                DockPanel.Dock="Right"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                VerticalAlignment="Center"
+                FontTypography="Body"
+                Text="{Binding Path=PageIndicator}"/>
+            <!-- 前进 -->
+            <ui:Button
+                DockPanel.Dock="Right"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                IsEnabled="{Binding Path=Loaded}"
+                Content="上一页"
+                FlowDirection="RightToLeft"
+                Click="Prev_Button_Click">
+                <ui:Button.Icon>
+                    <ui:SymbolIcon
+                        Symbol="ArrowPrevious24"/>
+                </ui:Button.Icon>
+            </ui:Button>
+        </DockPanel>
+        <ui:ProgressRing
+            Grid.Column="0"
+            Grid.Row="2"
+            Visibility="{Binding Path=IsLoading, Converter={StaticResource VisibilityConverter}}"
+            IsIndeterminate="True"/>
+        <Border
+            Grid.Column="0"
+            Grid.Row="2"
+            Margin="{StaticResource RootPanelMargin}"
+            Visibility="{Binding Path=Loaded, Converter={StaticResource VisibilityConverter}}">
+            <ui:ListView
+                ItemsSource="{Binding Path=Parties, Mode=OneWay}">
+                <ui:ListView.Resources>
+                    <conv:CategoryToIconConverter x:Key="IconConverter"/>
+                    <conv:ILVToStringConverter x:Key="ILVConverter"/>
+                    <conv:TimeLeftToStringConverter x:Key="TimeConverter"/>
+                </ui:ListView.Resources>
+                <ui:ListView.ItemTemplate>
+                    <DataTemplate
+                        DataType="{x:Type core:PartyInfo}">
+                        <Grid
+                            Margin="{StaticResource ListViewItemSpacing}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- 队内人数 -->
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="{StaticResource HorizontalPanelSpacing}"
+                                Orientation="Horizontal">
+                                <ui:TextBlock
+                                    VerticalAlignment="Center"
+                                    FontTypography="Subtitle"
+                                    Text="{Binding Path=Slots_filled}"/>
+                                <ui:TextBlock
+                                    VerticalAlignment="Center"
+                                    FontTypography="Subtitle"
+                                    Text="/"/>
+                                <ui:TextBlock
+                                    VerticalAlignment="Center"
+                                    FontTypography="Subtitle"
+                                    Text="{Binding Path=Slots_available}"/>
+                            </StackPanel>
+                            <!-- 根据招募类型展示图标 -->
+                            <Border
+                                Grid.Column="0"
+                                Margin="{StaticResource HorizontalPanelSpacing}"
+                                CornerRadius="8">
+                                <Image
+                                    Width="64"
+                                    Height="64"
+                                    Source="{Binding Path=Category, Converter={StaticResource IconConverter}}">
+                                </Image>
+                            </Border>
+                            <StackPanel
+                                Grid.Column="2"
+                                Margin="{StaticResource HorizontalPanelSpacing}">
+                                <!-- 招募标题 -->
+                                <ui:TextBlock
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    FontTypography="Subtitle"
+                                    Text="{Binding Path=Duty}"/>
+                                <!-- 招募信息 -->
+                                <ui:TextBlock
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    FontTypography="Body"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding Path=Description}"/>
+                            </StackPanel>
+                            <StackPanel
+                                FlowDirection="RightToLeft"
+                                Grid.Column="4">
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <!-- 发布人服务器和id 因为前面设置了 RightToLeft 所以这里要反着布局 -->
+                                    <!-- 感觉有点hack 不知道有没有什么优化方法 -->
+                                    <ui:TextBlock
+                                        Text="{Binding Path=Home_world}"
+                                        FontTypography="BodyStrong"
+                                        VerticalAlignment="Center"/>
+                                    <ui:TextBlock
+                                        Text="@"
+                                        FontTypography="Body"
+                                        VerticalAlignment="Center"/>
+                                    <ui:TextBlock
+                                        Text="{Binding Path=Name}"
+                                        FontTypography="BodyStrong"
+                                        VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <!-- 装等 -->
+                                <ui:TextBlock
+                                    Text="{Binding Path=Min_item_level, Converter={StaticResource ILVConverter}}"
+                                    FontTypography="Body"
+                                    VerticalAlignment="Center"/>
+                                <!-- 剩余时间 -->
+                                <ui:TextBlock
+                                    Text="{Binding Path=Time_left, Converter={StaticResource TimeConverter}}"
+                                    FontTypography="Body"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ui:ListView.ItemTemplate>
+            </ui:ListView>
+        </Border>
+    </Grid>
+</ui:FluentWindow>

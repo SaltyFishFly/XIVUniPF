@@ -1,0 +1,106 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows10.0.22000.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\DutyIcons\deepdungeon.png" />
+    <None Remove="Assets\DutyIcons\dungeons.png" />
+    <None Remove="Assets\DutyIcons\dutyroulette.png" />
+    <None Remove="Assets\DutyIcons\eureka.png" />
+    <None Remove="Assets\DutyIcons\exploratorymissions.png" />
+    <None Remove="Assets\DutyIcons\fates.png" />
+    <None Remove="Assets\DutyIcons\goldsaucer.png" />
+    <None Remove="Assets\DutyIcons\guildhests.png" />
+    <None Remove="Assets\DutyIcons\highendduty.png" />
+    <None Remove="Assets\DutyIcons\none.png" />
+    <None Remove="Assets\DutyIcons\pvp.png" />
+    <None Remove="Assets\DutyIcons\questbattles.png" />
+    <None Remove="Assets\DutyIcons\raids.png" />
+    <None Remove="Assets\DutyIcons\seasonal.png" />
+    <None Remove="Assets\DutyIcons\thehunt.png" />
+    <None Remove="Assets\DutyIcons\treasurehunt.png" />
+    <None Remove="Assets\DutyIcons\trials.png" />
+    <None Remove="Assets\DutyIcons\weeklybingo.png" />
+    <None Remove="Assets\SegoeIcons.TTF" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\DutyIcons\deepdungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\dungeons.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\dutyroulette.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\eureka.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\exploratorymissions.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\fates.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\goldsaucer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\guildhests.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\highendduty.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\none.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\pvp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\questbattles.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\raids.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\seasonal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\thehunt.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\treasurehunt.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\trials.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DutyIcons\weeklybingo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="4.0.3" />
+    <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.3" />
+    <PackageReference Include="WPF-UI.Tray" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XIVUniPF-Core\XIVUniPF-Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\SegoeIcons.TTF" />
+  </ItemGroup>
+
+</Project>
