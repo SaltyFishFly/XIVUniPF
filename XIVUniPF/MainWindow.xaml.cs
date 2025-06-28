@@ -84,5 +84,10 @@ namespace XIVUniPF
                 return;
             ViewModel.Parties.SortOption = option;
         }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.Parties.Refresh();
+        }
     }
 }

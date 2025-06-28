@@ -15,9 +15,12 @@ namespace XIVUniPF.ViewModels
 
         private readonly PartyCollection _parties;
 
+        private Pagination _pagination;
+
         private readonly ObservableCollection<PartySortOption> _sortOptions;
 
-        private Pagination _pagination;
+        private String _keywords;
+
 
         public bool IsLoading
         {
@@ -71,8 +74,22 @@ namespace XIVUniPF.ViewModels
 
         public ObservableCollection<PartySortOption> SortOptions => _sortOptions;
 
+        public String Keywords
+        {
+            get => _keywords;
+            set
+            {
+                if (value != _keywords)
+                {
+                    _keywords = value;
+                    Notify();
+                }
+            }
+        }
+
         public MainViewModel() 
         {
+            // init
             IsLoading = false;
             _options = new ObservableOptions(new IPFDataSource.Options
             {
@@ -91,6 +108,21 @@ namespace XIVUniPF.ViewModels
                 PartySortOptions.Category,
                 PartySortOptions.Datacenter,
             ];
+            _keywords = string.Empty;
+
+            // 添加关键词过滤器
+            _parties.AddFilter(info =>
+            {
+                var bindViewmodel = this;
+                var keywords = bindViewmodel.Keywords.Trim();
+                if (keywords == string.Empty)
+                    return true;
+
+                if (info.Description.Contains(keywords))
+                    return true;
+
+                return false;
+            });
         }
 
         // 实现接口

@@ -28,7 +28,7 @@ namespace XIVUniPF.Classes
                 if (value != sortOption)
                 {
                     sortOption = value;
-                    Update();
+                    Refresh();
                     OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 }
             }
@@ -53,10 +53,19 @@ namespace XIVUniPF.Classes
                 origin.Add(item);
             suppressNotification = false;
 
-            Update();
+            Refresh();
         }
 
-        private void Update()
+        public void AddFilter(Func<PartyInfo, bool> filter)
+        {
+            if (filter == null || filters.Contains(filter))
+                return;
+
+            filters.Add(filter);
+            Refresh();
+        }
+
+        public void Refresh()
         {
             suppressNotification = true;
 
@@ -69,7 +78,7 @@ namespace XIVUniPF.Classes
             var filtered = tmp.ToList();
             filtered.Sort(sortOption.Comparison);
 
-            // 添加到最终显示的集合中
+            // 添加到最终显示的列表中
             Clear();
             foreach (var item in filtered)
                 Add(item);

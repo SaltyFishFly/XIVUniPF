@@ -127,6 +127,20 @@
                         Symbol="ArrowPrevious24"/>
                 </ui:Button.Icon>
             </ui:Button>
+            <!-- 搜索框 -->
+            <ui:TextBox
+                DockPanel.Dock="Right"
+                MinWidth="128"
+                Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                VerticalAlignment="Center"
+                PlaceholderText="关键词搜索"
+                VerticalContentAlignment="Center"
+                Text="{Binding Path=Keywords, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                TextChanged="SearchBox_TextChanged">
+                <ui:TextBox.Icon>
+                    <ui:SymbolIcon Symbol="Search12"/>
+                </ui:TextBox.Icon>
+            </ui:TextBox>
         </DockPanel>
         <ui:ProgressRing
             Grid.Column="0"
