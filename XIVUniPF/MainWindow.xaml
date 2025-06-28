@@ -1,4 +1,4 @@
-﻿<ui:FluentWindow
+﻿<Window
     x:Class="XIVUniPF.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -14,19 +14,27 @@
     Title="XIVUniPF"
     Width="1300"
     Height="800"
-    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
-    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-    ExtendsContentIntoTitleBar="True"
-    WindowCornerPreference="Default"
+    DataContext="{DynamicResource ViewModel}"
+    Background="{DynamicResource ApplicationBackgroundBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    WindowStyle="None"
+    WindowChrome.WindowChrome="{DynamicResource WindowChromeKey}"
     WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <vm:MainViewModel x:Key="ViewModel"/>
+        <!-- 消除窗口顶上的白边 -->
+        <WindowChrome x:Key="WindowChromeKey">
+            <WindowChrome.ResizeBorderThickness>
+                <Thickness>5</Thickness>
+            </WindowChrome.ResizeBorderThickness>
+        </WindowChrome>
+    </Window.Resources>
     
-    <ui:FluentWindow.DataContext>
-        <vm:MainViewModel/>
-    </ui:FluentWindow.DataContext>
-    <ui:FluentWindow.Resources>
-        <conv:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
-    </ui:FluentWindow.Resources>
     <Grid>
+        <Grid.Resources>
+            <conv:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
+        </Grid.Resources>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -228,4 +236,4 @@
             </ui:ListView.ItemTemplate>
         </ui:ListView>
     </Grid>
-</ui:FluentWindow>
+</Window>

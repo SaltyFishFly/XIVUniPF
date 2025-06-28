@@ -39,6 +39,10 @@ namespace XIVUniPF_Core
                      urlBuilder.Append($"&search={Uri.EscapeDataString(option.Search)}");
                 if (option.Category != string.Empty)
                      urlBuilder.Append($"&datacenter={Uri.EscapeDataString(option.Datacenter)}");
+                if (option.Category != string.Empty)
+                    urlBuilder.Append($"&jobs={Uri.EscapeDataString(option.Jobs)}");
+                if (option.Category != string.Empty)
+                    urlBuilder.Append($"&duty={Uri.EscapeDataString(option.Duty)}");
 
                 var url = urlBuilder.ToString();
                 using var response = await client.GetAsync(url);

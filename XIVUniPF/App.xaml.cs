@@ -7,6 +7,7 @@ namespace XIVUniPF
     /// </summary>
     public partial class App : Application
     {
+
     }
 
 }

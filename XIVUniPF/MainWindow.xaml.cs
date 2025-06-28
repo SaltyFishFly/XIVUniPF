@@ -1,14 +1,15 @@
-﻿using System.Windows;
+﻿using Microsoft.Windows.Themes;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Wpf.Ui.Appearance;
-using Wpf.Ui.Controls;
 using XIVUniPF.Classes;
 using XIVUniPF.ViewModels;
 using XIVUniPF_Core;
 
 namespace XIVUniPF
 {
-    public partial class MainWindow : FluentWindow
+    public partial class MainWindow : Window
     {
         private MainViewModel ViewModel => (MainViewModel)DataContext;
 
@@ -16,17 +17,22 @@ namespace XIVUniPF
         {
             InitializeComponent();
 
-            // Windows 11 下使用 Mica
-            if (Environment.OSVersion.Version.Build >= 22000)
+            // 同步系统主题
+            // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
+#pragma warning disable WPF0001
+            ThemeMode = ThemeMode.System;
+#pragma warning restore WPF0001
+
+            /*
+            // 实验性：在 Windows10 上启用 Acrylic
+            if (Environment.OSVersion.Version.Build < 22000)
             {
-                WindowBackdropType = WindowBackdropType.Mica;
-                Loaded += (sender, args) => SystemThemeWatcher.Watch(this, WindowBackdropType.Mica, true);
+                Background = Brushes.Transparent;
+                var comp = new WindowAccentCompositor(this);
+                comp.Color = Color.FromArgb(200, 100, 100, 100);
+                comp.IsEnabled = true;
             }
-            else
-            {
-                WindowBackdropType = WindowBackdropType.Acrylic;
-                Loaded += (sender, args) => SystemThemeWatcher.Watch(this, WindowBackdropType.Acrylic, true);
-            }
+            */
 
             // 这里后面应该加入自定义
             var opt = new IPFDataSource.Options

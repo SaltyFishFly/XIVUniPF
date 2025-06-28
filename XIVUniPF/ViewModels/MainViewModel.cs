@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 using XIVUniPF.Classes;
 using XIVUniPF_Core;
 
@@ -77,7 +78,7 @@ namespace XIVUniPF.ViewModels
             _options = new ObservableOptions(new IPFDataSource.Options
             {
                 Page = 1,
-                PerPage = 50,
+                PerPage = 100,
                 Category = string.Empty,
                 World = string.Empty,
                 Search = string.Empty,

@@ -16,6 +16,10 @@
             public string Search { get; set; }
             // 按数据中心筛选（e.g. 陆行鸟）
             public string Datacenter { get; set; }
+            // 按职业 id 筛选，逗号分割
+            public string Jobs { get; set; }
+            // 按副本 id 筛选，逗号分割
+            public string Duty { get; set; }
 
             public Options()
             {
@@ -25,6 +29,8 @@
                 World = string.Empty;
                 Search = string.Empty;
                 Datacenter = string.Empty;
+                Jobs = string.Empty;
+                Duty = string.Empty;
             }
         }
 

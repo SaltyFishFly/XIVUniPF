@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "XIVUniPF": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}
