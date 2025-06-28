@@ -19,7 +19,6 @@ namespace XIVUniPF.ViewModels
 
         private Pagination _pagination;
 
-
         public bool IsLoading
         {
             get => _isLoading;
@@ -90,6 +89,7 @@ namespace XIVUniPF.ViewModels
             [
                 PartySortOptions.TimeLeft,
                 PartySortOptions.Category,
+                PartySortOptions.Datacenter,
             ];
         }
 

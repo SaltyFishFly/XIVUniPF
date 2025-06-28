@@ -11,7 +11,7 @@ namespace XIVUniPF.Converters
                 throw new InvalidCastException("时间类型必须为浮点数");
 
             var sec = (int)(float)time;
-            return $"剩余{sec / 60 + 1}分";
+            return $"剩余 {sec / 60 + 1} 分钟";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -12,21 +12,20 @@
     xmlns:classes="clr-namespace:XIVUniPF.Classes"
     mc:Ignorable="d"
     Title="XIVUniPF"
+    MinWidth="700"
     Width="1300"
     Height="800"
     DataContext="{DynamicResource ViewModel}"
-    Background="{DynamicResource ApplicationBackgroundBrush}"
-    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     WindowStyle="None"
-    WindowChrome.WindowChrome="{DynamicResource WindowChromeKey}"
-    WindowStartupLocation="CenterScreen">
+    WindowStartupLocation="CenterScreen"
+    WindowChrome.WindowChrome="{DynamicResource CustomChrome}">
     <Window.Resources>
         <vm:MainViewModel x:Key="ViewModel"/>
-        <!-- 消除窗口顶上的白边 -->
-        <WindowChrome x:Key="WindowChromeKey">
-            <WindowChrome.ResizeBorderThickness>
-                <Thickness>5</Thickness>
-            </WindowChrome.ResizeBorderThickness>
+        <WindowChrome x:Key="CustomChrome">
+            <WindowChrome.UseAeroCaptionButtons>false</WindowChrome.UseAeroCaptionButtons>
+            <WindowChrome.CaptionHeight>0</WindowChrome.CaptionHeight>
+            <WindowChrome.ResizeBorderThickness>5</WindowChrome.ResizeBorderThickness>
+            <WindowChrome.GlassFrameThickness>0</WindowChrome.GlassFrameThickness>
         </WindowChrome>
     </Window.Resources>
     
@@ -43,6 +42,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <!-- 标题栏 -->
         <ui:TitleBar
             Grid.Column="0"
             Grid.Row="0"
@@ -138,43 +138,31 @@
             Grid.Row="2"
             Margin="{StaticResource RootPanelMargin}"
             Visibility="{Binding Path=Loaded, Converter={StaticResource VisibilityConverter}}"
-            ItemsSource="{Binding Path=Parties, Mode=OneWay}">
+            ItemsSource="{Binding Path=Parties, Mode=OneWay}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ui:ListView.Resources>
                 <conv:CategoryToIconConverter x:Key="IconConverter"/>
+                <conv:PartySlotsConverter x:Key="PartySlotsConverter"/>
+                <conv:UsernameConverter x:Key="UserNameConverter"/>
+                <conv:WorldConverter x:Key="WorldConverter"/>
                 <conv:ILVToStringConverter x:Key="ILVConverter"/>
                 <conv:TimeLeftToStringConverter x:Key="TimeConverter"/>
             </ui:ListView.Resources>
+            
             <ui:ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type core:PartyInfo}">
-                    <Grid Margin="{StaticResource ListViewItemSpacing}">
+                    <Grid
+                        Margin="{StaticResource ListViewItemSpacing}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <!-- 队内人数 -->
-                        <StackPanel
-                            Grid.Column="1"
-                            Margin="{StaticResource HorizontalPanelSpacing}"
-                            Orientation="Horizontal">
-                            <ui:TextBlock
-                                VerticalAlignment="Center"
-                                FontTypography="Subtitle"
-                                Text="{Binding Path=Slots_filled}"/>
-                            <ui:TextBlock
-                                VerticalAlignment="Center"
-                                FontTypography="Subtitle"
-                                Text="/"/>
-                            <ui:TextBlock
-                                VerticalAlignment="Center"
-                                FontTypography="Subtitle"
-                                Text="{Binding Path=Slots_available}"/>
-                        </StackPanel>
                         <!-- 根据招募类型展示图标 -->
                         <Border
                             Grid.Column="0"
+                            VerticalAlignment="Center"
                             Margin="{StaticResource HorizontalPanelSpacing}"
                             CornerRadius="8">
                             <Image
@@ -183,43 +171,45 @@
                                 Source="{Binding Path=Category, Converter={StaticResource IconConverter}}">
                             </Image>
                         </Border>
+                        <!-- 队内人数 -->
+                        <ui:TextBlock
+                            Grid.Column="1"
+                            Margin="{StaticResource HorizontalPanelSpacing}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontTypography="Subtitle">
+                            <ui:TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource PartySlotsConverter}">
+                                    <Binding Path="Slots_filled"/>
+                                    <Binding Path="Slots_available"/>
+                                </MultiBinding>
+                            </ui:TextBlock.Text>
+                        </ui:TextBlock>
                         <StackPanel
                             Grid.Column="2"
                             Margin="{StaticResource HorizontalPanelSpacing}">
-                            <!-- 招募标题 -->
+                            <!-- 发布人id -->
                             <ui:TextBlock
-                                Grid.Column="1"
-                                Grid.Row="0"
-                                FontTypography="Subtitle"
-                                Text="{Binding Path=Duty}"/>
-                            <!-- 招募信息 -->
+                                VerticalAlignment="Center"
+                                FontTypography="BodyStrong">
+                                <ui:TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource UserNameConverter}">
+                                        <Binding Path="Name"/>
+                                        <Binding Path="Home_world"/>
+                                    </MultiBinding>
+                                </ui:TextBlock.Text>
+                            </ui:TextBlock>
+                            <!-- 当前服务器 -->
                             <ui:TextBlock
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                FontTypography="Body"
-                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="{Binding Path=Description}"/>
-                        </StackPanel>
-                        <StackPanel
-                            FlowDirection="RightToLeft"
-                            Grid.Column="4">
-                            <StackPanel
-                                Orientation="Horizontal">
-                                <!-- 发布人服务器和id 因为前面设置了 RightToLeft 所以这里要反着布局 -->
-                                <!-- 感觉有点hack 不知道有没有什么优化方法 -->
-                                <ui:TextBlock
-                                    Text="{Binding Path=Home_world}"
-                                    FontTypography="BodyStrong"
-                                    VerticalAlignment="Center"/>
-                                <ui:TextBlock
-                                    Text="@"
-                                    FontTypography="Body"
-                                    VerticalAlignment="Center"/>
-                                <ui:TextBlock
-                                    Text="{Binding Path=Name}"
-                                    FontTypography="BodyStrong"
-                                    VerticalAlignment="Center"/>
-                            </StackPanel>
+                                VerticalAlignment="Center"
+                                FontTypography="Body">
+                                <ui:TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource WorldConverter}">
+                                        <Binding Path="Datacenter"/>
+                                        <Binding Path="Home_world"/>
+                                    </MultiBinding>
+                                </ui:TextBlock.Text>
+                            </ui:TextBlock>
                             <!-- 装等 -->
                             <ui:TextBlock
                                 Text="{Binding Path=Min_item_level, Converter={StaticResource ILVConverter}}"
@@ -230,6 +220,27 @@
                                 Text="{Binding Path=Time_left, Converter={StaticResource TimeConverter}}"
                                 FontTypography="Body"
                                 VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Separator
+                            Grid.Column="2"
+                            Margin="{StaticResource HorizontalPanelSpacing}"
+                            HorizontalAlignment="Right"/>
+                        <!-- 招募正文 -->
+                        <StackPanel
+                            Grid.Column="3"
+                            Margin="{StaticResource HorizontalPanelSpacing}">
+                            <!-- 标题 -->
+                            <ui:TextBlock
+                                FontTypography="Subtitle"
+                                TextWrapping="Wrap"
+                                Text="{Binding Path=Duty}"/>
+                            <!-- 详细信息 -->
+                            <ui:TextBlock
+                                FontTypography="Body"
+                                TextWrapping="Wrap"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Path=Description}"
+                                TextTrimming="WordEllipsis"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

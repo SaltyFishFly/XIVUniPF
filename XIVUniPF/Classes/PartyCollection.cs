@@ -5,7 +5,7 @@ using XIVUniPF_Core;
 
 namespace XIVUniPF.Classes
 {
-    // 针对 PartyInfo 的特化，支持批量添加/替换和排序
+    // 针对 PartyInfo 的特化，支持替换、排序、过滤
     public class PartyCollection : ObservableCollection<PartyInfo>
     {
         private readonly IList<PartyInfo> origin;
@@ -13,6 +13,12 @@ namespace XIVUniPF.Classes
         private bool suppressNotification;
 
         private PartySortOption sortOption;
+
+        /// <summary>
+        /// 存储一组过滤器函数，用于筛选 PartyInfo
+        /// 返回 true 表示通过筛选
+        /// </summary>
+        private List<Func<PartyInfo, bool>> filters;
 
         public PartySortOption SortOption
         {
@@ -22,7 +28,7 @@ namespace XIVUniPF.Classes
                 if (value != sortOption)
                 {
                     sortOption = value;
-                    Sort();
+                    Update();
                     OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 }
             }
@@ -33,6 +39,7 @@ namespace XIVUniPF.Classes
             suppressNotification = false;
             origin = [];
             sortOption = PartySortOptions.TimeLeft;
+            filters = [];
         }
 
         public void Replace(IEnumerable<PartyInfo> items)
@@ -46,22 +53,31 @@ namespace XIVUniPF.Classes
                 origin.Add(item);
             suppressNotification = false;
 
-            Sort();
+            Update();
         }
 
-        private void Sort()
+        private void Update()
         {
             suppressNotification = true;
 
+            // 应用过滤器
+            var tmp = origin.AsEnumerable();
+            foreach (var filter in filters)
+                tmp = tmp.Where(filter);
+
+            // 排序
+            var filtered = tmp.ToList();
+            filtered.Sort(sortOption.Comparison);
+
+            // 添加到最终显示的集合中
             Clear();
-            var sortedItems = origin.ToList();
-            sortedItems.Sort((a, b) => SortOption.Comparison(a, b));
-            foreach (var item in sortedItems)
+            foreach (var item in filtered)
                 Add(item);
 
             suppressNotification = false;
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
+
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {

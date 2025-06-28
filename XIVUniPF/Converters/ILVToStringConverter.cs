@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace XIVUniPF.Converters
 {
-    class ILVToStringConverter : IValueConverter
+    internal class ILVToStringConverter : IValueConverter
     {
         public object Convert(object ilv, Type targetType, object parameter, CultureInfo culture)
         {

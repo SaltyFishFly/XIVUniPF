@@ -1,8 +1,5 @@
-﻿using Microsoft.Windows.Themes;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Wpf.Ui.Appearance;
 using XIVUniPF.Classes;
 using XIVUniPF.ViewModels;
 using XIVUniPF_Core;
@@ -18,9 +15,9 @@ namespace XIVUniPF
             InitializeComponent();
 
             // 同步系统主题
-            // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
+            // 实验性 API
 #pragma warning disable WPF0001
-            ThemeMode = ThemeMode.System;
+            Application.Current.ThemeMode = ThemeMode.System;
 #pragma warning restore WPF0001
 
             /*
