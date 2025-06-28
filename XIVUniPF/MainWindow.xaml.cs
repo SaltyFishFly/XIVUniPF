@@ -1,7 +1,8 @@
 ﻿using System.Windows;
-
+using System.Windows.Controls;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
+using XIVUniPF.Classes;
 using XIVUniPF.ViewModels;
 using XIVUniPF_Core;
 
@@ -14,9 +15,20 @@ namespace XIVUniPF
         public MainWindow()
         {
             InitializeComponent();
-            // 适应主题变化
-            Loaded += (sender, args) => SystemThemeWatcher.Watch(this, WindowBackdropType.Mica, true);
-            // 这里后面可以改
+
+            // Windows 11 下使用 Mica
+            if (Environment.OSVersion.Version.Build >= 22000)
+            {
+                WindowBackdropType = WindowBackdropType.Mica;
+                Loaded += (sender, args) => SystemThemeWatcher.Watch(this, WindowBackdropType.Mica, true);
+            }
+            else
+            {
+                WindowBackdropType = WindowBackdropType.Acrylic;
+                Loaded += (sender, args) => SystemThemeWatcher.Watch(this, WindowBackdropType.Acrylic, true);
+            }
+
+            // 这里后面应该加入自定义
             var opt = new IPFDataSource.Options
             {
                 Page = 1,
@@ -31,11 +43,18 @@ namespace XIVUniPF
 
         public async void LoadList(IPFDataSource.Options opt)
         {
-            ViewModel.IsLoading = true;
-            var res = await PFService.Instance.Fetch(opt);
-            ViewModel.Parties.Replace(res.Data);
-            ViewModel.Pagination = res.Pagination;
-            ViewModel.IsLoading = false;
+            try
+            {
+                ViewModel.IsLoading = true;
+                var res = await PFService.Instance.Fetch(opt);
+                ViewModel.Parties.Replace(res.Data);
+                ViewModel.Pagination = res.Pagination;
+                ViewModel.IsLoading = false;
+            }
+            catch (Exception e)
+            {
+                ViewModel.IsLoading = false;
+            }
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
@@ -53,6 +72,14 @@ namespace XIVUniPF
         {
             ViewModel.Options.Page++;
             LoadList(ViewModel.Options.GetOptions());
+        }
+
+        private void SortOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var option = e.AddedItems.OfType<PartySortOption>().First();
+            if (option == null)
+                return;
+            ViewModel.Parties.SortOption = option;
         }
     }
 }

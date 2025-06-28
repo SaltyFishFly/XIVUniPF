@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using XIVUniPF.Classes;
 using XIVUniPF_Core;
@@ -11,7 +12,9 @@ namespace XIVUniPF.ViewModels
 
         private ObservableOptions _options;
 
-        private readonly DutyCollection _parties;
+        private readonly PartyCollection _parties;
+
+        private readonly ObservableCollection<PartySortOption> _sortOptions;
 
         private Pagination _pagination;
 
@@ -47,7 +50,7 @@ namespace XIVUniPF.ViewModels
 
         public string PageIndicator => $"{_pagination.Page} / {_pagination.Total_pages}";
 
-        public DutyCollection Parties
+        public PartyCollection Parties
         {
             get => _parties;
         }
@@ -66,6 +69,8 @@ namespace XIVUniPF.ViewModels
             }
         }
 
+        public ObservableCollection<PartySortOption> SortOptions => _sortOptions;
+
         public MainViewModel() 
         {
             IsLoading = false;
@@ -80,6 +85,11 @@ namespace XIVUniPF.ViewModels
             });
             _parties = [];
             _pagination = new Pagination();
+            _sortOptions =
+            [
+                PartySortOptions.TimeLeft,
+                PartySortOptions.Category,
+            ];
         }
 
         // 实现接口
