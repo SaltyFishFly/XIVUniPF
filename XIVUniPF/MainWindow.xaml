@@ -99,7 +99,7 @@
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
-                IsEnabled="{Binding Path=Loaded}"
+                IsEnabled="{Binding Path=IsPrevButtonEnabled}"
                 Content="下一页"
                 Click="Next_Button_Click">
                 <ui:Button.Icon>
@@ -119,7 +119,7 @@
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
-                IsEnabled="{Binding Path=Loaded}"
+                IsEnabled="{Binding Path=IsNextButtonEnabled}"
                 Content="上一页"
                 FlowDirection="RightToLeft"
                 Click="Prev_Button_Click">

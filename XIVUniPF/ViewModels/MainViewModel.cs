@@ -34,6 +34,8 @@ namespace XIVUniPF.ViewModels
                     _isLoading = value;
                     Notify();
                     Notify(nameof(Loaded));
+                    Notify(nameof(IsPrevButtonEnabled));
+                    Notify(nameof(IsNextButtonEnabled));
                 }
             }
         }
@@ -52,6 +54,10 @@ namespace XIVUniPF.ViewModels
                 }
             }
         }
+
+        public bool IsPrevButtonEnabled => Loaded && _pagination.Page > 1;
+
+        public bool IsNextButtonEnabled => Loaded && _pagination.Page < _pagination.Total_pages;
 
         public ObservableOptions Options
         {
@@ -83,6 +89,8 @@ namespace XIVUniPF.ViewModels
                     _pagination = value;
                     Notify();
                     Notify(nameof(PageIndicator));
+                    Notify(nameof(IsPrevButtonEnabled));
+                    Notify(nameof(IsNextButtonEnabled));
                 }
             }
         }
