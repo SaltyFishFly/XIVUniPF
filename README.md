@@ -28,6 +28,12 @@ XIVUniPF 是 [remote-party-finder](https://github.com/LittleNightmare/remote-par
 
 安装包和 Microsoft Store 上架也在计划中
 
+## 关于开源
+
+本项目使用 [AGPLv3 许可证](https://www.gnu.org/licenses/agpl-3.0.html) 开源。
+
+你可以自由使用、修改和分发本项目，包括商业用途；但必须保留原有许可证和版权声明，包括对本项目的引用。
+
 ## 鸣谢
 [remote-party-finder](https://github.com/LittleNightmare/remote-party-finder) 提供API支持
 
