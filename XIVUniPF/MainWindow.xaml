@@ -100,7 +100,6 @@
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
                 IsEnabled="{Binding Path=IsNextButtonEnabled}"
-                Content="下一页"
                 Click="Next_Button_Click">
                 <ui:Button.Icon>
                     <ui:SymbolIcon
@@ -120,8 +119,6 @@
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
                 IsEnabled="{Binding Path=IsPrevButtonEnabled}"
-                Content="上一页"
-                FlowDirection="RightToLeft"
                 Click="Prev_Button_Click">
                 <ui:Button.Icon>
                     <ui:SymbolIcon
@@ -154,7 +151,9 @@
             Margin="{StaticResource RootPanelMargin}"
             Visibility="{Binding Path=Loaded, Converter={StaticResource VisibilityConverter}}"
             ItemsSource="{Binding Path=Parties, Mode=OneWay}"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            VirtualizingPanel.VirtualizationMode="Recycling"
+            VirtualizingPanel.ScrollUnit="Pixel">
             <ui:ListView.Resources>
                 <conv:CategoryToIconConverter x:Key="IconConverter"/>
                 <conv:PartySlotsConverter x:Key="PartySlotsConverter"/>
