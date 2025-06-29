@@ -60,6 +60,8 @@ namespace XIVUniPF_Core
 
             // 合并结果
             await Task.WhenAll(tasks);
+
+            result.Data.EnsureCapacity((pages - 1) * 100);
             foreach (var t in tasks)
                 result.Data.AddRange(t.Result.Data);
             result.Pagination.Total_pages = 1;

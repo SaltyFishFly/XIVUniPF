@@ -6,25 +6,25 @@ namespace XIVUniPF.Converters
 {
     internal class CategoryToIconConverter : IValueConverter
     {
-        private static readonly Dictionary<string, string> Map = new()
+        private static readonly Dictionary<string, BitmapImage> Map = new()
         {
-            { "deepdungeon", "Assets/DutyIcons/DeepDungeon.png" },
-            { "dungeons", "Assets/DutyIcons/dungeons.png" },
-            { "dutyroulette", "Assets/DutyIcons/dutyroulette.png" },
-            { "eureka", "Assets/DutyIcons/eureka.png" },
-            { "exploratorymissions", "Assets/DutyIcons/exploratorymissions.png" },
-            { "fates", "Assets/DutyIcons/fates.png" },
-            { "goldsaucer", "Assets/DutyIcons/goldsaucer.png" },
-            { "guildhests", "Assets/DutyIcons/guildhests.png" },
-            { "highendduty", "Assets/DutyIcons/highendduty.png" },
-            { "none", "Assets/DutyIcons/none.png" },
-            { "pvp", "Assets/DutyIcons/pvp.png" },
-            { "raids", "Assets/DutyIcons/raids.png" },
-            { "seasonal", "Assets/DutyIcons/seasonal.png" },
-            { "thehunt", "Assets/DutyIcons/thehunt.png" },
-            { "treasurehunt", "Assets/DutyIcons/treasurehunt.png" },
-            { "trials", "Assets/DutyIcons/trials.png" },
-            { "weeklybingo", "Assets/DutyIcons/weeklybingo.png" },
+            { "deepdungeon", load("Assets/DutyIcons/DeepDungeon.png") },
+            { "dungeons", load("Assets/DutyIcons/dungeons.png") },
+            { "dutyroulette", load("Assets/DutyIcons/dutyroulette.png") },
+            { "eureka", load("Assets/DutyIcons/eureka.png") },
+            { "exploratorymissions", load("Assets/DutyIcons/exploratorymissions.png") },
+            { "fates", load("Assets/DutyIcons/fates.png") },
+            { "goldsaucer", load("Assets/DutyIcons/goldsaucer.png") },
+            { "guildhests", load("Assets/DutyIcons/guildhests.png") },
+            { "highendduty", load("Assets/DutyIcons/highendduty.png") },
+            { "none", load("Assets/DutyIcons/none.png") },
+            { "pvp", load("Assets/DutyIcons/pvp.png") },
+            { "raids", load("Assets/DutyIcons/raids.png") },
+            { "seasonal", load("Assets/DutyIcons/seasonal.png") },
+            { "thehunt", load("Assets/DutyIcons/thehunt.png") },
+            { "treasurehunt", load("Assets/DutyIcons/treasurehunt.png") },
+            { "trials", load("Assets/DutyIcons/trials.png") },
+            { "weeklybingo", load("Assets/DutyIcons/weeklybingo.png") },
         };
 
         /// <summary>
@@ -43,19 +43,23 @@ namespace XIVUniPF.Converters
                 throw new InvalidCastException("招募类型必须是字符串");
 
             var key = ((string)category).ToLower();
-            var path = Map.TryGetValue(key, out var value) ? value : "Assets/DutyIcons/none.png";
-            // 加载图标
-            var img = new BitmapImage();
-            img.BeginInit();
-            img.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.EndInit();
+            var img = Map.TryGetValue(key, out var value) ? value : Map["none"];
             return img;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private static BitmapImage load(string path)
+        {
+            var img = new BitmapImage();
+            img.BeginInit();
+            img.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
+            img.CacheOption = BitmapCacheOption.OnLoad;
+            img.EndInit();
+            return img;
         }
     }
 }
