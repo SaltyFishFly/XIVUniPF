@@ -2,7 +2,7 @@
 {
     public interface IPFDataSource
     {
-        public class Options
+        public struct Options
         {
             // 当前页码，默认为 1
             public int Page { get; set; }

@@ -6,7 +6,7 @@ namespace XIVUniPF.Classes
 {
     public class ObservableOptions : INotifyPropertyChanged
     {
-        private readonly Options _options;
+        private Options _options;
 
         public ObservableOptions()
         {
@@ -15,7 +15,7 @@ namespace XIVUniPF.Classes
 
         public ObservableOptions(Options options)
         {
-            _options = options ?? new Options();
+            _options = options;
         }
 
         public int Page

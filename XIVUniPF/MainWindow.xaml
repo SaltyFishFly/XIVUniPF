@@ -93,6 +93,22 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <ui:TextBlock
+                VerticalAlignment="Center"
+                Text="筛选"/>
+            <ComboBox
+                DockPanel.Dock="Left"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                SelectedItem="{Binding Path=Parties.SortOption}"
+                ItemsSource="{Binding Path=SortOptions}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <ui:TextBlock
+                            Text="{Binding Path=Name}"
+                            FontTypography="Body"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <!-- 后退 -->
             <ui:Button
                 DockPanel.Dock="Right"
@@ -146,7 +162,7 @@
             Grid.Column="0"
             Grid.Row="2"
             Visibility="{Binding Path=IsLoading, Converter={StaticResource VisibilityConverter}}"
-            IsIndeterminate="True"/>
+            Progress="{Binding Path=LoadingProgress}"/>
         <ui:ListView
             Grid.Column="0"
             Grid.Row="2"

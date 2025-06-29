@@ -6,6 +6,8 @@ namespace XIVUniPF_Core
 {
     public class PFService : IPFDataSource
     {
+        private static readonly string BaseUrl = "https://xivpf.littlenightmare.top/";
+
         public static PFService Instance => _instance.Value;
 
         // 懒加载
@@ -24,9 +26,51 @@ namespace XIVUniPF_Core
             client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.0 (contact: gfishfly@qq.com)");
         }
 
+        /// <summary>
+        /// 获取全部招募数据
+        /// 如果给服务器带来太大压力可能会改
+        /// </summary>
+        /// <param name="option">选项</param>
+        /// <param name="progressCallback">进度更新时的回调函数 int为进度条增量</param>
+        /// <returns></returns>
+        public async Task<PartyList> FetchAll(IPFDataSource.Options option, Action<float>? progressCallback = null)
+        {
+            option.Page = 1;
+            option.PerPage = 100;
+
+            // 先发一个请求，知道总共有多少页
+            PartyList result = await Fetch(option);
+            var pages = result.Pagination.Total_pages;
+            progressCallback?.Invoke(100f / pages);
+
+            // 请求剩下的页
+            List<Task<PartyList>> tasks = [];
+            for (int i = 2; i <= pages; i++)
+            {
+                option.Page = i;
+
+                var task = Fetch(option).ContinueWith(t =>
+                {
+                    progressCallback?.Invoke(100f / pages);
+                    return t.Result;
+                });
+
+                tasks.Add(task);
+            }
+
+            // 合并结果
+            await Task.WhenAll(tasks);
+            foreach (var t in tasks)
+                result.Data.AddRange(t.Result.Data);
+            result.Pagination.Total_pages = 1;
+            result.Pagination.Total = result.Data.Count;
+
+            return result;
+        }
+
         public async Task<PartyList> Fetch(IPFDataSource.Options option)
         {
-            var urlBuilder = new StringBuilder("https://xivpf.littlenightmare.top/api/listings");
+            var urlBuilder = new StringBuilder(BaseUrl + "/api/listings");
             try
             {
                 urlBuilder.Append($"?page={option.Page}")

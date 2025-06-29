@@ -11,6 +11,8 @@ namespace XIVUniPF.ViewModels
     {
         private bool _isLoading;
 
+        private float _loadingProgress;
+
         private ObservableOptions _options;
 
         private readonly PartyCollection _parties;
@@ -37,6 +39,19 @@ namespace XIVUniPF.ViewModels
         }
 
         public bool Loaded => !_isLoading;
+
+        public float LoadingProgress
+        {
+            get => _loadingProgress;
+            set
+            {
+                if (value != _loadingProgress)
+                {
+                    _loadingProgress = value;
+                    Notify();
+                }
+            }
+        }
 
         public ObservableOptions Options
         {
@@ -90,7 +105,8 @@ namespace XIVUniPF.ViewModels
         public MainViewModel() 
         {
             // init
-            IsLoading = false;
+            IsLoading = true;
+            LoadingProgress = 0;
             _options = new ObservableOptions(new IPFDataSource.Options
             {
                 Page = 1,

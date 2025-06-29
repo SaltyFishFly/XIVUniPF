@@ -49,9 +49,15 @@ namespace XIVUniPF
             try
             {
                 ViewModel.IsLoading = true;
-                var res = await PFService.Instance.Fetch(opt);
+                ViewModel.LoadingProgress = 0;
+
+                var res = await PFService.Instance.FetchAll(
+                    opt, 
+                    delta => Dispatcher.Invoke(() => ViewModel.LoadingProgress += delta)
+                );
                 ViewModel.Parties.Replace(res.Data);
                 ViewModel.Pagination = res.Pagination;
+
                 ViewModel.IsLoading = false;
             }
             catch (Exception e)
