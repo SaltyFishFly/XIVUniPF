@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using XIVUniPF.Classes;
@@ -110,12 +111,12 @@ namespace XIVUniPF.ViewModels
             });
             _parties = [];
             _pagination = new Pagination();
-            _sortOptions =
-            [
-                PartySortOptions.TimeLeft,
-                PartySortOptions.Category,
-                PartySortOptions.Datacenter,
-            ];
+            _sortOptions = new ObservableCollection<PartySortOption>(
+                typeof(PartySortOptions)
+                    .GetFields(BindingFlags.Public | BindingFlags.Static)
+                    .Select(f => (PartySortOption)f.GetValue(null)!)
+                    .Where(v => v != null)
+            );
             _keywords = string.Empty;
 
             // 添加关键词过滤器

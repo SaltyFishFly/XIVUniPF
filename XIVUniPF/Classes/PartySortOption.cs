@@ -16,13 +16,27 @@ namespace XIVUniPF.Classes
         }
     }
 
-    public class PartySortOptions
+    public static class PartySortOptions
     {
         public static readonly PartySortOption TimeLeft =
             new("剩余时间", (a, b) => a.Time_left < b.Time_left ? -1 : 1);
 
+        public static readonly PartySortOption TimeLeftReversed =
+            new("剩余时间（反向）", (a, b) => -TimeLeft.Comparison(a,b));
+
         public static readonly PartySortOption Category =
-            new("任务分类", (a, b) => a.Category_id > b.Category_id ? -1 : 1);
+            new("任务分类", (a, b) => 
+            {
+                if (a.Category_id > b.Category_id)
+                    return -1;
+                if (a.Category_id < b.Category_id)
+                    return 1;
+                // 相同时 fallback 到时间排序
+                return a.Time_left < b.Time_left ? -1 : 1;
+            });
+
+        public static readonly PartySortOption CategoryReversed =
+            new("任务分类（反向）", (a, b) => -Category.Comparison(a,b));
 
         public static readonly PartySortOption Datacenter =
             new("所在大区", (a, b) =>
@@ -33,8 +47,10 @@ namespace XIVUniPF.Classes
                     return -1;
                 if (aId > bId)
                     return 1;
-                // 大区相同 fallback 到时间排序
                 return a.Time_left < b.Time_left ? -1 : 1;
             });
+
+        public static readonly PartySortOption DatacenterReversed =
+            new("所在大区（反向）", (a, b) => -Datacenter.Comparison(a, b));
     }
 }

@@ -126,7 +126,7 @@ namespace XIVUniPF.Classes
 
             // 分页
             var paged = filtered
-                .Skip(page * pageSize)
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
