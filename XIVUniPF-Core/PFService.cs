@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
@@ -6,7 +7,7 @@ namespace XIVUniPF_Core
 {
     public class PFService : IPFDataSource
     {
-        private static readonly string BaseUrl = "https://xivpf.littlenightmare.top/";
+        private static readonly string Server = "https://xivpf.littlenightmare.top/";
 
         public static PFService Instance => _instance.Value;
 
@@ -19,10 +20,14 @@ namespace XIVUniPF_Core
             AllowTrailingCommas = true,
         };
 
-        private readonly HttpClient client = new();
+        private readonly HttpClient client;
 
         public PFService()
         {
+            client = new HttpClient()
+            { 
+                BaseAddress = new Uri(Server) 
+            };
             client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.0 (contact: gfishfly@qq.com)");
         }
 
@@ -72,25 +77,25 @@ namespace XIVUniPF_Core
 
         public async Task<PartyList> Fetch(IPFDataSource.Options option)
         {
-            var urlBuilder = new StringBuilder(BaseUrl + "/api/listings");
+            var endpoint = new StringBuilder("/api/listings");
             try
             {
-                urlBuilder.Append($"?page={option.Page}")
+                endpoint.Append($"?page={option.Page}")
                           .Append($"&per_page={option.PerPage}");
                 if (option.Category != string.Empty)
-                    urlBuilder.Append($"&category={Uri.EscapeDataString(option.Category)}");
+                    endpoint.Append($"&category={Uri.EscapeDataString(option.Category)}");
                 if (option.Category != string.Empty)
-                    urlBuilder.Append($"&world={Uri.EscapeDataString(option.World)}");
+                    endpoint.Append($"&world={Uri.EscapeDataString(option.World)}");
                 if (option.Category != string.Empty)
-                     urlBuilder.Append($"&search={Uri.EscapeDataString(option.Search)}");
+                     endpoint.Append($"&search={Uri.EscapeDataString(option.Search)}");
                 if (option.Category != string.Empty)
-                     urlBuilder.Append($"&datacenter={Uri.EscapeDataString(option.Datacenter)}");
+                     endpoint.Append($"&datacenter={Uri.EscapeDataString(option.Datacenter)}");
                 if (option.Category != string.Empty)
-                    urlBuilder.Append($"&jobs={Uri.EscapeDataString(option.Jobs)}");
+                    endpoint.Append($"&jobs={Uri.EscapeDataString(option.Jobs)}");
                 if (option.Category != string.Empty)
-                    urlBuilder.Append($"&duty={Uri.EscapeDataString(option.Duty)}");
+                    endpoint.Append($"&duty={Uri.EscapeDataString(option.Duty)}");
 
-                var url = urlBuilder.ToString();
+                var url = endpoint.ToString();
                 using var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 

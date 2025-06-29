@@ -18,7 +18,8 @@
     DataContext="{DynamicResource ViewModel}"
     WindowStyle="None"
     WindowStartupLocation="CenterScreen"
-    WindowChrome.WindowChrome="{DynamicResource CustomChrome}">
+    WindowChrome.WindowChrome="{DynamicResource CustomChrome}"
+    Icon="pack://application:,,,/Assets/PartyFinder@2x.png">
     <Window.Resources>
         <vm:MainViewModel x:Key="ViewModel"/>
         <WindowChrome x:Key="CustomChrome">
@@ -85,22 +86,6 @@
                 SelectedItem="{Binding Path=Parties.SortOption}"
                 ItemsSource="{Binding Path=SortOptions}"
                 SelectionChanged="SortOption_SelectionChanged">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <ui:TextBlock
-                            Text="{Binding Path=Name}"
-                            FontTypography="Body"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <ui:TextBlock
-                VerticalAlignment="Center"
-                Text="筛选"/>
-            <ComboBox
-                DockPanel.Dock="Left"
-                Margin="{StaticResource HorizontalPanelSpacing}"
-                SelectedItem="{Binding Path=Parties.SortOption}"
-                ItemsSource="{Binding Path=SortOptions}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <ui:TextBlock
