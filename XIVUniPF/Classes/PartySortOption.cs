@@ -14,7 +14,7 @@ namespace XIVUniPF.Classes
             Name = name;
             Comparison = predicate;
         }
-    } 
+    }
 
     public class PartySortOptions
     {

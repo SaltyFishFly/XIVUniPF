@@ -55,9 +55,9 @@ namespace XIVUniPF.ViewModels
             }
         }
 
-        public bool IsPrevButtonEnabled => Loaded && _pagination.Page > 1;
+        public bool IsPrevButtonEnabled => Loaded && _parties.Page > 1;
 
-        public bool IsNextButtonEnabled => Loaded && _pagination.Page < _pagination.Total_pages;
+        public bool IsNextButtonEnabled => Loaded && _parties.Page < _parties.PageCount;
 
         public ObservableOptions Options
         {
@@ -72,27 +72,11 @@ namespace XIVUniPF.ViewModels
             }
         }
 
-        public string PageIndicator => $"{_pagination.Page} / {_pagination.Total_pages}";
+        public string PageIndicator => $"{_parties.Page} / {_parties.PageCount}";
 
         public PartyCollection Parties
         {
             get => _parties;
-        }
-
-        public Pagination Pagination
-        {
-            get => _pagination;
-            set
-            {
-                if (value != _pagination)
-                {
-                    _pagination = value;
-                    Notify();
-                    Notify(nameof(PageIndicator));
-                    Notify(nameof(IsPrevButtonEnabled));
-                    Notify(nameof(IsNextButtonEnabled));
-                }
-            }
         }
 
         public ObservableCollection<PartySortOption> SortOptions => _sortOptions;
@@ -137,16 +121,24 @@ namespace XIVUniPF.ViewModels
             // 添加关键词过滤器
             _parties.AddFilter(info =>
             {
-                var bindViewmodel = this;
-                var keywords = bindViewmodel.Keywords.Trim();
+                var keywords = Keywords.Trim();
                 if (keywords == string.Empty)
                     return true;
 
+                if (info.Duty.Contains(keywords))
+                    return true;
                 if (info.Description.Contains(keywords))
                     return true;
 
                 return false;
             });
+
+            _parties.PageChanged += (sender) =>
+            {
+                Notify(nameof(PageIndicator));
+                Notify(nameof(IsPrevButtonEnabled));
+                Notify(nameof(IsNextButtonEnabled));
+            };
         }
 
         // 实现接口

@@ -94,12 +94,12 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <!-- 后退 -->
+            <!-- 前进 -->
             <ui:Button
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
-                IsEnabled="{Binding Path=IsPrevButtonEnabled}"
+                IsEnabled="{Binding Path=IsNextButtonEnabled}"
                 Content="下一页"
                 Click="Next_Button_Click">
                 <ui:Button.Icon>
@@ -114,12 +114,12 @@
                 VerticalAlignment="Center"
                 FontTypography="Body"
                 Text="{Binding Path=PageIndicator}"/>
-            <!-- 前进 -->
+            <!-- 后退 -->
             <ui:Button
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
-                IsEnabled="{Binding Path=IsNextButtonEnabled}"
+                IsEnabled="{Binding Path=IsPrevButtonEnabled}"
                 Content="上一页"
                 FlowDirection="RightToLeft"
                 Click="Prev_Button_Click">

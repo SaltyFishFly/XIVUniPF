@@ -56,7 +56,6 @@ namespace XIVUniPF
                     delta => Dispatcher.Invoke(() => ViewModel.LoadingProgress += delta)
                 );
                 ViewModel.Parties.Replace(res.Data);
-                ViewModel.Pagination = res.Pagination;
 
                 ViewModel.IsLoading = false;
             }
@@ -73,14 +72,12 @@ namespace XIVUniPF
 
         private void Prev_Button_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Options.Page--;
-            LoadList(ViewModel.Options.GetOptions());
+            ViewModel.Parties.Page--;
         }
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Options.Page++;
-            LoadList(ViewModel.Options.GetOptions());
+            ViewModel.Parties.Page++;
         }
 
         private void SortOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,7 +90,7 @@ namespace XIVUniPF
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ViewModel.Parties.Refresh();
+            ViewModel.Parties.Update();
         }
     }
 }
