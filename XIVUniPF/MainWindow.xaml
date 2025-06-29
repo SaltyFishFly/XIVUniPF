@@ -198,7 +198,7 @@
                             <Image
                                 Width="64"
                                 Height="64"
-                                Source="{Binding Path=Category, Converter={StaticResource IconConverter}}">
+                                Source="{Binding Path=Category, Mode=OneTime, Converter={StaticResource IconConverter}}">
                             </Image>
                         </Border>
                         <!-- 队内人数 -->
@@ -209,9 +209,9 @@
                             VerticalAlignment="Center"
                             FontTypography="Subtitle">
                             <ui:TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource PartySlotsConverter}">
-                                    <Binding Path="Slots_filled"/>
-                                    <Binding Path="Slots_available"/>
+                                <MultiBinding Mode="OneTime" Converter="{StaticResource PartySlotsConverter}">
+                                    <Binding Path="Slots_filled" Mode="OneTime"/>
+                                    <Binding Path="Slots_available" Mode="OneTime"/>
                                 </MultiBinding>
                             </ui:TextBlock.Text>
                         </ui:TextBlock>
@@ -223,9 +223,9 @@
                                 VerticalAlignment="Center"
                                 FontTypography="BodyStrong">
                                 <ui:TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource UserNameConverter}">
-                                        <Binding Path="Name"/>
-                                        <Binding Path="Home_world"/>
+                                    <MultiBinding Mode="OneTime" Converter="{StaticResource UserNameConverter}">
+                                        <Binding Path="Name" Mode="OneTime"/>
+                                        <Binding Path="Home_world" Mode="OneTime"/>
                                     </MultiBinding>
                                 </ui:TextBlock.Text>
                             </ui:TextBlock>
@@ -234,20 +234,20 @@
                                 VerticalAlignment="Center"
                                 FontTypography="Body">
                                 <ui:TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource WorldConverter}">
-                                        <Binding Path="Datacenter"/>
-                                        <Binding Path="Home_world"/>
+                                    <MultiBinding Mode="OneTime" Converter="{StaticResource WorldConverter}">
+                                        <Binding Path="Datacenter" Mode="OneTime"/>
+                                        <Binding Path="Home_world" Mode="OneTime"/>
                                     </MultiBinding>
                                 </ui:TextBlock.Text>
                             </ui:TextBlock>
                             <!-- 装等 -->
                             <ui:TextBlock
-                                Text="{Binding Path=Min_item_level, Converter={StaticResource ILVConverter}}"
+                                Text="{Binding Path=Min_item_level, Mode=OneTime, Converter={StaticResource ILVConverter}}"
                                 FontTypography="Body"
                                 VerticalAlignment="Center"/>
                             <!-- 剩余时间 -->
                             <ui:TextBlock
-                                Text="{Binding Path=Time_left, Converter={StaticResource TimeConverter}}"
+                                Text="{Binding Path=Time_left, Mode=OneTime, Converter={StaticResource TimeConverter}}"
                                 FontTypography="Body"
                                 VerticalAlignment="Center"/>
                         </StackPanel>
@@ -263,13 +263,13 @@
                             <ui:TextBlock
                                 FontTypography="Subtitle"
                                 TextWrapping="Wrap"
-                                Text="{Binding Path=Duty}"/>
+                                Text="{Binding Path=Duty, Mode=OneTime}"/>
                             <!-- 详细信息 -->
                             <ui:TextBlock
                                 FontTypography="Body"
                                 TextWrapping="Wrap"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="{Binding Path=Description}"
+                                Text="{Binding Path=Description, Mode=OneTime}"
                                 TextTrimming="WordEllipsis"/>
                         </StackPanel>
                     </Grid>
