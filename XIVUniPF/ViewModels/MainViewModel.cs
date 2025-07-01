@@ -2,8 +2,9 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
+using System.Text.RegularExpressions;
 using XIVUniPF.Classes;
+using XIVUniPF.Classes.Filters;
 using XIVUniPF_Core;
 
 namespace XIVUniPF.ViewModels
@@ -23,6 +24,8 @@ namespace XIVUniPF.ViewModels
         private readonly ObservableCollection<PartySortOption> _sortOptions;
 
         private String _keywords;
+
+        private SearchBoxFilter _searchBoxFilter;
 
 
         public bool IsLoading
@@ -118,21 +121,10 @@ namespace XIVUniPF.ViewModels
                     .Where(v => v != null)
             );
             _keywords = string.Empty;
+            _searchBoxFilter = new SearchBoxFilter();
 
             // 添加关键词过滤器
-            _parties.AddFilter(info =>
-            {
-                var keywords = Keywords.Trim();
-                if (keywords == string.Empty)
-                    return true;
-
-                if (info.Duty.Contains(keywords))
-                    return true;
-                if (info.Description.Contains(keywords))
-                    return true;
-
-                return false;
-            });
+            _parties.AddFilter(info => _searchBoxFilter.Predict(info, _keywords));
 
             _parties.PageChanged += (sender) =>
             {

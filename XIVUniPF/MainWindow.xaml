@@ -129,6 +129,7 @@
             <ui:TextBox
                 DockPanel.Dock="Right"
                 MinWidth="128"
+                Width="200"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 VerticalAlignment="Center"
                 PlaceholderText="关键词搜索"
