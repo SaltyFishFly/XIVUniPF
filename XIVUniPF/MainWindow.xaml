@@ -221,7 +221,7 @@
                                 <ui:TextBlock.Text>
                                     <MultiBinding Mode="OneTime" Converter="{StaticResource WorldConverter}">
                                         <Binding Path="Datacenter" Mode="OneTime"/>
-                                        <Binding Path="Home_world" Mode="OneTime"/>
+                                        <Binding Path="Created_world" Mode="OneTime"/>
                                     </MultiBinding>
                                 </ui:TextBlock.Text>
                             </ui:TextBlock>
