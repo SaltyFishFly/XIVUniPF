@@ -6,7 +6,7 @@ using XIVUniPF.Classes;
 using XIVUniPF.ViewModels;
 using XIVUniPF_Core;
 
-namespace XIVUniPF
+namespace XIVUniPF.Views
 {
     public partial class MainWindow : Window
     {
