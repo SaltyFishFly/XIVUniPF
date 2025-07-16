@@ -75,7 +75,7 @@
                 </ui:Button.Icon>
             </ui:Button>
             <Separator
-                Margin="8,0,8,0"
+                Margin="{StaticResource HorizontalPanelSpacing}"
                 DockPanel.Dock="Left"/>
             <!-- 排序 -->
             <ui:TextBlock
@@ -84,6 +84,7 @@
             <ComboBox
                 DockPanel.Dock="Left"
                 Margin="{StaticResource HorizontalPanelSpacing}"
+                IsEnabled="{Binding Path=Loaded}"
                 SelectedItem="{Binding Path=Parties.SortOption}"
                 ItemsSource="{Binding Path=SortOptions}"
                 SelectionChanged="SortOption_SelectionChanged">
@@ -132,11 +133,14 @@
                 MinWidth="128"
                 Width="200"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                IsEnabled="{Binding Path=Loaded}"
                 VerticalAlignment="Center"
                 PlaceholderText="关键词搜索"
                 VerticalContentAlignment="Center"
                 Text="{Binding Path=Keywords, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                TextChanged="SearchBox_TextChanged">
+                TextChanged="SearchBox_TextChanged"
+                ToolTip="支持使用&#x000A;大区: | 服务器: | 副本: | id:&#x000A;前缀进行搜索"
+                ToolTipService.InitialShowDelay="200">
                 <ui:TextBox.Icon>
                     <ui:SymbolIcon Symbol="Search12"/>
                 </ui:TextBox.Icon>
