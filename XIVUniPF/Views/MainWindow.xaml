@@ -13,7 +13,8 @@
     mc:Ignorable="d"
     Title="XIVUniPF"
     MinWidth="700"
-    Width="1300"
+    MinHeight="400"
+    Width="1200"
     Height="800"
     DataContext="{DynamicResource ViewModel}"
     WindowStyle="None"
@@ -68,7 +69,7 @@
                 <ui:Button.Icon>
                     <!-- 0xE72C 刷新图标 -->
                     <ui:FontIcon
-                        FontFamily="./Assets/#Segoe Fluent Icons"
+                        FontFamily="pack://application:,,,/Assets/#Segoe Fluent Icons"
                         Glyph="&#xE72C;"
                         FontSize="14"/>
                 </ui:Button.Icon>
@@ -161,7 +162,8 @@
                 <conv:UsernameConverter x:Key="UserNameConverter"/>
                 <conv:WorldConverter x:Key="WorldConverter"/>
                 <conv:ILVToStringConverter x:Key="ILVConverter"/>
-                <conv:TimeLeftToStringConverter x:Key="TimeConverter"/>
+                <conv:TimeLeftToStringConverter x:Key="TimeLeftConverter"/>
+                <conv:UpdatedTimeConverter x:Key="UpdatedTimeConverter"/>
             </ui:ListView.Resources>
             
             <ui:ListView.ItemTemplate>
@@ -170,15 +172,16 @@
                         Margin="{StaticResource ListViewItemSpacing}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        
                         <!-- 根据招募类型展示图标 -->
                         <Border
                             Grid.Column="0"
-                            VerticalAlignment="Center"
                             Margin="{StaticResource HorizontalPanelSpacing}"
+                            VerticalAlignment="Center"
                             CornerRadius="8">
                             <Image
                                 Width="64"
@@ -186,25 +189,48 @@
                                 Source="{Binding Path=Category, Mode=OneTime, Converter={StaticResource IconConverter}}">
                             </Image>
                         </Border>
-                        <!-- 队内人数 -->
-                        <ui:TextBlock
+                        <StackPanel
                             Grid.Column="1"
                             Margin="{StaticResource HorizontalPanelSpacing}"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontTypography="Subtitle">
-                            <ui:TextBlock.Text>
-                                <MultiBinding Mode="OneTime" Converter="{StaticResource PartySlotsConverter}">
-                                    <Binding Path="Slots_filled" Mode="OneTime"/>
-                                    <Binding Path="Slots_available" Mode="OneTime"/>
-                                </MultiBinding>
-                            </ui:TextBlock.Text>
-                        </ui:TextBlock>
-                        <StackPanel
+                            VerticalAlignment="Center">
+                            <!-- 队内人数 -->
+                            <ui:TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontTypography="Subtitle">
+                                <ui:TextBlock.Text>
+                                    <MultiBinding Mode="OneTime" Converter="{StaticResource PartySlotsConverter}">
+                                        <Binding Path="Slots_filled" Mode="OneTime"/>
+                                        <Binding Path="Slots_available" Mode="OneTime"/>
+                                    </MultiBinding>
+                                </ui:TextBlock.Text>
+                            </ui:TextBlock>
+                            <!-- 最低装等 -->
+                            <ui:TextBlock
+                                Visibility="{Binding Path=IsIlvSpecified, Mode=OneTime, Converter={StaticResource VisibilityConverter}}"
+                                HorizontalAlignment="Center"
+                                Text="{Binding Path=Min_item_level, Mode=OneTime, Converter={StaticResource ILVConverter}}"
+                                FontSize="13"/>
+                        </StackPanel>
+                        <Grid
                             Grid.Column="2"
                             Margin="{StaticResource HorizontalPanelSpacing}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
                             <!-- 发布人id -->
                             <ui:TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
                                 VerticalAlignment="Center"
                                 FontTypography="BodyStrong">
                                 <ui:TextBlock.Text>
@@ -215,7 +241,14 @@
                                 </ui:TextBlock.Text>
                             </ui:TextBlock>
                             <!-- 当前服务器 -->
+                            <ui:SymbolIcon
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                Symbol="ServerSurfaceMultiple16"/>
                             <ui:TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
                                 VerticalAlignment="Center"
                                 FontTypography="Body">
                                 <ui:TextBlock.Text>
@@ -225,17 +258,31 @@
                                     </MultiBinding>
                                 </ui:TextBlock.Text>
                             </ui:TextBlock>
-                            <!-- 装等 -->
-                            <ui:TextBlock
-                                Text="{Binding Path=Min_item_level, Mode=OneTime, Converter={StaticResource ILVConverter}}"
-                                FontTypography="Body"
-                                VerticalAlignment="Center"/>
                             <!-- 剩余时间 -->
+                            <ui:SymbolIcon
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                Symbol="Clock16"/>
                             <ui:TextBlock
-                                Text="{Binding Path=Time_left, Mode=OneTime, Converter={StaticResource TimeConverter}}"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Text="{Binding Path=Time_left, Mode=OneTime, Converter={StaticResource TimeLeftConverter}}"
                                 FontTypography="Body"
                                 VerticalAlignment="Center"/>
-                        </StackPanel>
+                            <!-- 刷新时间 -->
+                            <ui:SymbolIcon
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                Symbol="ArrowDown16"/>
+                            <ui:TextBlock
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="{Binding Path=Updated_at, Mode=OneTime, Converter={StaticResource UpdatedTimeConverter}}"
+                                FontTypography="Body"
+                                VerticalAlignment="Center"/>
+                        </Grid>
                         <Separator
                             Grid.Column="2"
                             Margin="{StaticResource HorizontalPanelSpacing}"
@@ -255,7 +302,8 @@
                                 TextWrapping="Wrap"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                 Text="{Binding Path=Description, Mode=OneTime}"
-                                TextTrimming="WordEllipsis"/>
+                                TextTrimming="WordEllipsis"
+                                MaxHeight="60"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

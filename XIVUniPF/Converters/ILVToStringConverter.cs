@@ -10,7 +10,7 @@ namespace XIVUniPF.Converters
             if (ilv is not int)
                 throw new InvalidCastException("ILV的类型必须为整数");
 
-            return (int)ilv != 0 ? $"最低品级：{ilv}" : "最低品级：无";
+            return $"ILV {ilv}";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

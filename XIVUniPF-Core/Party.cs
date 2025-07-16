@@ -20,6 +20,8 @@
         public bool Is_cross_world { get; set; }
         public string Datacenter { get; set; }
 
+        public bool IsIlvSpecified => Min_item_level > 0;
+
         public PartyInfo()
         {
             Id = 0;
