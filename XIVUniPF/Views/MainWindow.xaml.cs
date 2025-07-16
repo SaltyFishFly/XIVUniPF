@@ -54,7 +54,7 @@ namespace XIVUniPF.Views
                 ViewModel.LoadingProgress = 0;
 
                 var res = await PFService.Instance.FetchAll(
-                    opt, 
+                    opt,
                     delta => Dispatcher.Invoke(() => ViewModel.LoadingProgress += delta)
                 );
                 ViewModel.Parties.Replace(res.Data);

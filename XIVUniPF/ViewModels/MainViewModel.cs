@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using XIVUniPF.Classes;
 using XIVUniPF.Classes.Filters;
 using XIVUniPF_Core;
@@ -98,7 +97,7 @@ namespace XIVUniPF.ViewModels
             }
         }
 
-        public MainViewModel() 
+        public MainViewModel()
         {
             // init
             IsLoading = true;

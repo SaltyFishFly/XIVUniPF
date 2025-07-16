@@ -11,7 +11,7 @@ namespace XIVUniPF.Converters
             if (value is not bool)
                 throw new InvalidCastException("加载情况必须是 bool 类型");
 
-            return (bool) value ? Visibility.Visible : Visibility.Collapsed;
+            return (bool)value ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

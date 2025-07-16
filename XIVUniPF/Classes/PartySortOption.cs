@@ -22,10 +22,10 @@ namespace XIVUniPF.Classes
             new("剩余时间", (a, b) => a.Time_left < b.Time_left ? -1 : 1);
 
         public static readonly PartySortOption TimeLeftReversed =
-            new("剩余时间（反向）", (a, b) => -TimeLeft.Comparison(a,b));
+            new("剩余时间（反向）", (a, b) => -TimeLeft.Comparison(a, b));
 
         public static readonly PartySortOption Category =
-            new("任务分类", (a, b) => 
+            new("任务分类", (a, b) =>
             {
                 if (a.Category_id > b.Category_id)
                     return -1;
@@ -36,7 +36,7 @@ namespace XIVUniPF.Classes
             });
 
         public static readonly PartySortOption CategoryReversed =
-            new("任务分类（反向）", (a, b) => -Category.Comparison(a,b));
+            new("任务分类（反向）", (a, b) => -Category.Comparison(a, b));
 
         public static readonly PartySortOption Datacenter =
             new("所在大区", (a, b) =>

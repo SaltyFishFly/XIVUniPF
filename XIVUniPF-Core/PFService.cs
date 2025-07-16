@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
@@ -25,8 +24,8 @@ namespace XIVUniPF_Core
         public PFService()
         {
             client = new HttpClient()
-            { 
-                BaseAddress = new Uri(Server) 
+            {
+                BaseAddress = new Uri(Server)
             };
             client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.0 (contact: gfishfly@qq.com)");
         }
@@ -87,9 +86,9 @@ namespace XIVUniPF_Core
                 if (option.Category != string.Empty)
                     endpoint.Append($"&world={Uri.EscapeDataString(option.World)}");
                 if (option.Category != string.Empty)
-                     endpoint.Append($"&search={Uri.EscapeDataString(option.Search)}");
+                    endpoint.Append($"&search={Uri.EscapeDataString(option.Search)}");
                 if (option.Category != string.Empty)
-                     endpoint.Append($"&datacenter={Uri.EscapeDataString(option.Datacenter)}");
+                    endpoint.Append($"&datacenter={Uri.EscapeDataString(option.Datacenter)}");
                 if (option.Category != string.Empty)
                     endpoint.Append($"&jobs={Uri.EscapeDataString(option.Jobs)}");
                 if (option.Category != string.Empty)
