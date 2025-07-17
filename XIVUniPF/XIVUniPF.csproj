@@ -108,4 +108,8 @@
     <Resource Include="Assets\SegoeIcons.TTF" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\JobIcons\" />
+  </ItemGroup>
+
 </Project>
