@@ -114,10 +114,10 @@ namespace XIVUniPF.ViewModels
             _parties = [];
             _pagination = new Pagination();
             _sortOptions = new ObservableCollection<PartySortOption>(
-                typeof(PartySortOptions)
-                    .GetFields(BindingFlags.Public | BindingFlags.Static)
-                    .Select(f => (PartySortOption)f.GetValue(null)!)
-                    .Where(v => v != null)
+                from field in typeof(PartySortOptions).GetFields(BindingFlags.Public | BindingFlags.Static)
+                let option = field.GetValue(null)!
+                where option != null
+                select (PartySortOption)option
             );
             _keywords = string.Empty;
             _searchBoxFilter = new SearchBoxFilter();

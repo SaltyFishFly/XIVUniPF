@@ -24,6 +24,12 @@ namespace XIVUniPF.Classes
         public static readonly PartySortOption TimeLeftReversed =
             new("剩余时间（反向）", (a, b) => -TimeLeft.Comparison(a, b));
 
+        public static readonly PartySortOption LastUpdate =
+            new("更新时间", (a, b) => a.Updated_at > b.Updated_at ? -1 : 1);
+
+        public static readonly PartySortOption LastUpdateReversed =
+            new("更新时间（反向）", (a, b) => -LastUpdate.Comparison(a, b));
+
         public static readonly PartySortOption Category =
             new("任务分类", (a, b) =>
             {
