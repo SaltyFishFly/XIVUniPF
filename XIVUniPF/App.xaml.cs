@@ -1,13 +1,16 @@
-﻿using System.Windows;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using System.Windows;
 
 namespace XIVUniPF
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        private TaskbarIcon? _trayIcon;
 
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            _trayIcon = (TaskbarIcon)FindResource("Taskbar");
+        }
     }
-
 }
