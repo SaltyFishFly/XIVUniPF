@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 using XIVUniPF.Classes;
@@ -93,6 +94,18 @@ namespace XIVUniPF.Views
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             ViewModel.Parties.Update();
+        }
+
+        private void Refresh_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = ViewModel.Loaded;
+            e.Handled = true;
+        }
+
+        private void Refresh_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            LoadList(ViewModel.Options.GetOptions());
+            e.Handled = true;
         }
     }
 }

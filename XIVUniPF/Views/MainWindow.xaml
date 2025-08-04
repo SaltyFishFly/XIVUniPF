@@ -23,14 +23,29 @@
     Icon="pack://application:,,,/Assets/PartyFinder@2x.png">
     <Window.Resources>
         <vm:MainViewModel x:Key="ViewModel"/>
+        <!-- 自定义边框 -->
         <WindowChrome x:Key="CustomChrome">
             <WindowChrome.UseAeroCaptionButtons>false</WindowChrome.UseAeroCaptionButtons>
             <WindowChrome.CaptionHeight>0</WindowChrome.CaptionHeight>
             <WindowChrome.ResizeBorderThickness>5</WindowChrome.ResizeBorderThickness>
             <WindowChrome.GlassFrameThickness>0</WindowChrome.GlassFrameThickness>
         </WindowChrome>
+        <!-- 快捷键 -->
+        <RoutedUICommand x:Key="Refresh" Text="刷新"/>
     </Window.Resources>
-    
+    <Window.CommandBindings>
+        <CommandBinding
+            Command="{StaticResource Refresh}"
+            CanExecute="Refresh_CanExecute"
+            Executed="Refresh_Executed"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding
+            Key="F5"
+            Command="{StaticResource Refresh}"
+            CommandParameter="{Binding}"/>
+    </Window.InputBindings>
+
     <Grid>
         <Grid.Resources>
             <conv:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
