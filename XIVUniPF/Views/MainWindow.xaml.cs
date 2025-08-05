@@ -13,6 +13,9 @@ namespace XIVUniPF.Views
     {
         private MainViewModel ViewModel => (MainViewModel)DataContext;
 
+        // 是否正在输入法拼字阶段
+        private bool _isComposing = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -62,7 +65,7 @@ namespace XIVUniPF.Views
 
                 ViewModel.IsLoading = false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 ViewModel.IsLoading = false;
             }
@@ -91,8 +94,29 @@ namespace XIVUniPF.Views
             ViewModel.Parties.SortOption = option;
         }
 
+        private void OnTextInputStart(object sender, TextCompositionEventArgs e)
+        {
+            _isComposing = true;
+        }
+
+        private void OnTextInputUpdate(object sender, TextCompositionEventArgs e)
+        {
+            _isComposing = true;
+        }
+
+        private void OnTextInputFinal(object sender, TextCompositionEventArgs e)
+        {
+            _isComposing = false;
+        }
+
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_isComposing) return;
+
+            var textBox = sender as TextBox;
+            // 手动将 TextBox 的 Text 推送到 ViewModel
+            textBox?.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+
             ViewModel.Parties.Update();
         }
 

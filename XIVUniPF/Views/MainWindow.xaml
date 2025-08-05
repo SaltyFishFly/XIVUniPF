@@ -152,8 +152,11 @@
                 VerticalAlignment="Center"
                 PlaceholderText="关键词搜索"
                 VerticalContentAlignment="Center"
-                Text="{Binding Path=Keywords, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding Path=Keywords, Mode=OneWayToSource, UpdateSourceTrigger=Explicit}"
                 TextChanged="SearchBox_TextChanged"
+                TextCompositionManager.PreviewTextInputStart="OnTextInputStart"
+                TextCompositionManager.PreviewTextInputUpdate="OnTextInputUpdate"
+                TextCompositionManager.PreviewTextInput="OnTextInputFinal"
                 ToolTip="支持使用&#x000A;大区: | 服务器: | 副本: | id:&#x000A;前缀进行搜索"
                 ToolTipService.InitialShowDelay="200">
                 <ui:TextBox.Icon>
