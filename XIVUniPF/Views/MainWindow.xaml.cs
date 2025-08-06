@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
-
 using XIVUniPF.Classes;
 using XIVUniPF.ViewModels;
 using XIVUniPF_Core;
@@ -11,6 +11,8 @@ namespace XIVUniPF.Views
 {
     public partial class MainWindow : Window
     {
+        private static readonly SolidColorBrush localPartyTextColor = new(Color.FromRgb(0xE0, 0xA9, 0x33));
+
         private MainViewModel ViewModel => (MainViewModel)DataContext;
 
         // 是否正在输入法拼字阶段
@@ -124,6 +126,17 @@ namespace XIVUniPF.Views
         {
             LoadList(ViewModel.Options.GetOptions());
             e.Handled = true;
+        }
+
+        // 对本地招募标记为橙色
+        // 用了一种比较 dirty 的实现
+        // 如果能用 Binding + Converter实现会更好
+        private void DutyName_Loaded(object sender, RoutedEventArgs e)
+        {
+            var s = (Wpf.Ui.Controls.TextBlock)sender;
+            var context = (PartyInfo)s.DataContext;
+            if (!context.Is_cross_world)
+                s.Foreground = localPartyTextColor;
         }
     }
 }

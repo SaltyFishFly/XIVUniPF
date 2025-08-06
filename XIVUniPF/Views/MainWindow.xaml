@@ -318,7 +318,8 @@
                             <ui:TextBlock
                                 FontTypography="Subtitle"
                                 TextWrapping="Wrap"
-                                Text="{Binding Path=Duty, Mode=OneTime}"/>
+                                Text="{Binding Path=Duty, Mode=OneTime}"
+                                Loaded="DutyName_Loaded"/>
                             <!-- 详细信息 -->
                             <ui:TextBlock
                                 FontTypography="Body"

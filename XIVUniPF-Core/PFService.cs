@@ -35,7 +35,7 @@ namespace XIVUniPF_Core
         /// 如果给服务器带来太大压力可能会改
         /// </summary>
         /// <param name="option">选项</param>
-        /// <param name="progressCallback">进度更新时的回调函数 int为进度条增量</param>
+        /// <param name="progressCallback">进度更新时的回调函数 float为进度条增量</param>
         /// <returns></returns>
         public async Task<PartyList> FetchAll(IPFDataSource.Options option, Action<float>? progressCallback = null)
         {
