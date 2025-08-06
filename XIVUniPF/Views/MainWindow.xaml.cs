@@ -19,23 +19,17 @@ namespace XIVUniPF.Views
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
 
             // 同步系统主题
             // 实验性 API
 #pragma warning disable WPF0001
             Application.Current.ThemeMode = ThemeMode.System;
 #pragma warning restore WPF0001
-
-            /*
-            // 实验性：在 Windows10 上启用 Acrylic
-            if (Environment.OSVersion.Version.Build < 22000)
-            {
-                Background = Brushes.Transparent;
-                var comp = new WindowAccentCompositor(this);
-                comp.Color = Color.FromArgb(200, 100, 100, 100);
-                comp.IsEnabled = true;
-            }
-            */
 
             // 这里后面应该加入自定义
             var opt = new IPFDataSource.Options
