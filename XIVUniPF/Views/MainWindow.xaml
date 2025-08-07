@@ -18,7 +18,6 @@
     Height="800"
     DataContext="{DynamicResource ViewModel}"
     WindowStyle="None"
-    Background="Transparent"
     WindowStartupLocation="CenterScreen"
     WindowChrome.WindowChrome="{DynamicResource CustomChrome}"
     Icon="pack://application:,,,/Assets/PartyFinder@2x.png">

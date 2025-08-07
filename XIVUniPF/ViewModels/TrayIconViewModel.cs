@@ -14,7 +14,7 @@ namespace XIVUniPF.ViewModels
             get => new BasicCommand(() =>
                 {
                     var window = Application.Current.MainWindow;
-                    if (window == null)
+                    if (window == null || window is not MainWindow)
                     {
                         window = Application.Current.MainWindow = new MainWindow();
                         window.Show();
