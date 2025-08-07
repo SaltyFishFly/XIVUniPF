@@ -6,6 +6,39 @@ namespace XIVUniPF_Core
 {
     public class PFService : IPFDataSource
     {
+        public struct Option
+        {
+            // 当前页码，默认为 1
+            public int Page { get; set; }
+            // 每页返回记录数，默认为 20，最大值 100
+            public int PerPage { get; set; }
+            // 按分类筛选
+            public string Category { get; set; }
+            // 按服务器筛选（匹配创建世界或主世界 e.g. 拉诺西亚）
+            public string World { get; set; }
+            // 关键字搜索，支持大小写不敏感匹配
+            public string Search { get; set; }
+            // 按数据中心筛选（e.g. 陆行鸟）
+            public string Datacenter { get; set; }
+            // 按职业 id 筛选，逗号分割
+            public string Jobs { get; set; }
+            // 按副本 id 筛选，逗号分割
+            public string Duty { get; set; }
+
+            public Option()
+            {
+                Page = 1;
+                PerPage = 20;
+                Category = string.Empty;
+                World = string.Empty;
+                Search = string.Empty;
+                Datacenter = string.Empty;
+                Jobs = string.Empty;
+                Duty = string.Empty;
+            }
+        }
+
+        // static
         private static readonly string Server = "https://xivpf.littlenightmare.top/";
 
         public static PFService Instance => _instance.Value;
@@ -19,7 +52,14 @@ namespace XIVUniPF_Core
             AllowTrailingCommas = true,
         };
 
+        // members
+        public delegate void PartyFinderUpdateEventHandler(PFService sender);
+
+        public event PartyFinderUpdateEventHandler? OnPartyFinderUpdate;
+
         private readonly HttpClient client;
+
+        private PartyList parties;
 
         public PFService()
         {
@@ -27,18 +67,27 @@ namespace XIVUniPF_Core
             {
                 BaseAddress = new Uri(Server)
             };
-            client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.0 (contact: gfishfly@qq.com)");
+            client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.1 (contact: gfishfly@qq.com)");
+            parties = new PartyList();
+        }
+
+        public PartyList GetParties()
+        {
+            return parties.Clone();
         }
 
         /// <summary>
         /// 获取全部招募数据
         /// 如果给服务器带来太大压力可能会改
+        /// 更新后通过事件通知订阅方
         /// </summary>
         /// <param name="option">选项</param>
         /// <param name="progressCallback">进度更新时的回调函数 float为进度条增量</param>
         /// <returns></returns>
-        public async Task<PartyList> FetchAll(IPFDataSource.Options option, Action<float>? progressCallback = null)
+        public async Task Update(PFService.Option option, Action<float>? progressCallback = null)
         {
+
+
             option.Page = 1;
             option.PerPage = 100;
 
@@ -71,10 +120,11 @@ namespace XIVUniPF_Core
             result.Pagination.Total_pages = 1;
             result.Pagination.Total = result.Data.Count;
 
-            return result;
+            parties = result;
+            OnPartyFinderUpdate?.Invoke(this);
         }
 
-        public async Task<PartyList> Fetch(IPFDataSource.Options option)
+        private async Task<PartyList> Fetch(PFService.Option option)
         {
             var endpoint = new StringBuilder("/api/listings");
             try

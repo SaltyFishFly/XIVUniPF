@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using XIVUniPF.Classes;
 using XIVUniPF.Classes.Filters;
-using XIVUniPF_Core;
 
 namespace XIVUniPF.ViewModels
 {
@@ -14,11 +13,7 @@ namespace XIVUniPF.ViewModels
 
         private float _loadingProgress;
 
-        private ObservableOptions _options;
-
         private readonly PartyCollection _parties;
-
-        private Pagination _pagination;
 
         private readonly ObservableCollection<PartySortOption> _sortOptions;
 
@@ -62,19 +57,6 @@ namespace XIVUniPF.ViewModels
 
         public bool IsNextButtonEnabled => Loaded && _parties.Page < _parties.PageCount;
 
-        public ObservableOptions Options
-        {
-            get => _options;
-            set
-            {
-                if (value != _options)
-                {
-                    _options = value;
-                    Notify();
-                }
-            }
-        }
-
         public string PageIndicator => $"{_parties.Page} / {_parties.PageCount}";
 
         public PartyCollection Parties
@@ -102,17 +84,7 @@ namespace XIVUniPF.ViewModels
             // init
             IsLoading = true;
             LoadingProgress = 0;
-            _options = new ObservableOptions(new IPFDataSource.Options
-            {
-                Page = 1,
-                PerPage = 100,
-                Category = string.Empty,
-                World = string.Empty,
-                Search = string.Empty,
-                Datacenter = string.Empty
-            });
             _parties = [];
-            _pagination = new Pagination();
             _sortOptions = new ObservableCollection<PartySortOption>(
                 from field in typeof(PartySortOptions).GetFields(BindingFlags.Public | BindingFlags.Static)
                 let option = field.GetValue(null)!

@@ -52,5 +52,20 @@
         public List<PartyInfo> Data { get; set; } = [];
 
         public Pagination Pagination { get; set; } = new();
+
+        public PartyList Clone()
+        {
+            return new PartyList()
+            {
+                Data = [.. Data],
+                Pagination = new() 
+                { 
+                    Total = Pagination.Total,
+                    Page = Pagination.Page,
+                    Per_page = Pagination.Per_page,
+                    Total_pages = Pagination.Total_pages,
+                }
+            };
+        }
     }
 }
