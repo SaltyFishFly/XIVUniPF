@@ -1,0 +1,332 @@
+﻿<Page 
+    x:Class="XIVUniPF.Views.PartyFinderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:local="clr-namespace:XIVUniPF.Views"
+    xmlns:c="clr-namespace:XIVUniPF.Classes"
+    xmlns:vm="clr-namespace:XIVUniPF.ViewModels"
+    xmlns:conv="clr-namespace:XIVUniPF.Converters"
+    xmlns:core="clr-namespace:XIVUniPF_Core;assembly=XIVUniPF-Core"
+    d:DataContext="{d:DesignInstance Type=vm:PartyFinderPageViewModel}"
+    mc:Ignorable="d" 
+    Title="PartyFinderView"
+    DataContext="{DynamicResource ViewModel}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+    <!-- 草你妈的傻逼微软 Page中的TextBlock不会响应主题更改 Debug了我三个小时 -->
+    <!-- 先用这个workaround一下 微软的傻逼狗屎框架 发布十几年后还能有1.3k个issue -->
+    <Page.Resources>
+        <vm:PartyFinderPageViewModel x:Key="ViewModel" />
+        <!-- 快捷键 -->
+        <RoutedUICommand x:Key="Refresh" Text="刷新"/>
+    </Page.Resources>
+    <Page.CommandBindings>
+        <CommandBinding
+            Command="{StaticResource Refresh}"
+            CanExecute="Refresh_CanExecute"
+            Executed="Refresh_Executed"/>
+    </Page.CommandBindings>
+    <Page.InputBindings>
+        <KeyBinding
+            Key="F5"
+            Command="{StaticResource Refresh}"
+            CommandParameter="{Binding}"/>
+    </Page.InputBindings>
+
+    <Grid>
+        <Grid.Resources>
+            <conv:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
+        </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Toolbar -->
+        <DockPanel
+            x:Name="Toolbar"
+            Grid.Column="0"
+            Grid.Row="0"
+            Margin="{StaticResource ToolbarPanelMargin}"
+            LastChildFill="False">
+            <!-- 刷新按钮 -->
+            <ui:Button
+                DockPanel.Dock="Left"
+                Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                IsEnabled="{Binding Path=Loaded}"
+                Content="刷新"
+                Click="Refresh_Button_Click">
+                <ui:Button.Icon>
+                    <!-- 0xE72C 刷新图标 -->
+                    <ui:FontIcon
+                        FontFamily="pack://application:,,,/Assets/#Segoe Fluent Icons"
+                        Glyph="&#xE72C;"
+                        FontSize="14"/>
+                </ui:Button.Icon>
+            </ui:Button>
+            <Separator
+                DockPanel.Dock="Left"
+                Margin="{StaticResource HorizontalPanelSpacing}"/>
+            <!-- 排序 -->
+            <ui:TextBlock
+                VerticalAlignment="Center"
+                Text="排序"/>
+            <ComboBox
+                DockPanel.Dock="Left"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                IsEnabled="{Binding Path=Loaded}"
+                SelectedItem="{Binding Path=Parties.SortOption}"
+                ItemsSource="{Binding Path=SortOptions}"
+                SelectionChanged="SortOption_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <ui:TextBlock
+                            Text="{Binding Path=Name}"
+                            FontTypography="Body"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <!-- 设置 -->
+            <ui:Button
+                DockPanel.Dock="Right"
+                Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                IsEnabled="{Binding Path=IsNextButtonEnabled}"
+                Click="Settings_Button_Click">
+                <ui:Button.Icon>
+                    <ui:SymbolIcon
+                        Symbol="Settings24"/>
+                </ui:Button.Icon>
+            </ui:Button>
+            <Separator
+                DockPanel.Dock="Right"
+                Margin="{StaticResource HorizontalPanelSpacing}"/>
+            <!-- 前进 -->
+            <ui:Button
+                DockPanel.Dock="Right"
+                Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                IsEnabled="{Binding Path=IsNextButtonEnabled}"
+                Click="Next_Button_Click">
+                <ui:Button.Icon>
+                    <ui:SymbolIcon
+                        Symbol="ArrowNext24"/>
+                </ui:Button.Icon>
+            </ui:Button>
+            <!-- 页码 -->
+            <ui:TextBlock
+                DockPanel.Dock="Right"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                VerticalAlignment="Center"
+                FontTypography="Body"
+                Text="{Binding Path=PageIndicator}"/>
+            <!-- 后退 -->
+            <ui:Button
+                DockPanel.Dock="Right"
+                Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                Margin="{StaticResource HorizontalPanelSpacing}"
+                IsEnabled="{Binding Path=IsPrevButtonEnabled}"
+                Click="Prev_Button_Click">
+                <ui:Button.Icon>
+                    <ui:SymbolIcon
+                        Symbol="ArrowPrevious24"/>
+                </ui:Button.Icon>
+            </ui:Button>
+            <!-- 搜索框 -->
+            <ui:TextBox
+                DockPanel.Dock="Right"
+                MinWidth="128"
+                Width="200"
+                Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                IsEnabled="{Binding Path=Loaded}"
+                VerticalAlignment="Center"
+                PlaceholderText="关键词搜索"
+                VerticalContentAlignment="Center"
+                Text="{Binding Path=Keywords, Mode=OneWayToSource, UpdateSourceTrigger=Explicit}"
+                TextChanged="SearchBox_TextChanged"
+                TextCompositionManager.PreviewTextInputStart="OnTextInputStart"
+                TextCompositionManager.PreviewTextInputUpdate="OnTextInputUpdate"
+                TextCompositionManager.PreviewTextInput="OnTextInputFinal"
+                ToolTip="支持使用&#x000A;大区: | 服务器: | 副本: | id:&#x000A;前缀进行搜索"
+                ToolTipService.InitialShowDelay="200">
+                <ui:TextBox.Icon>
+                    <ui:SymbolIcon Symbol="Search12"/>
+                </ui:TextBox.Icon>
+            </ui:TextBox>
+        </DockPanel>
+        <ui:ProgressRing
+            Grid.Column="0"
+            Grid.Row="1"
+            Visibility="{Binding Path=IsLoading, Converter={StaticResource VisibilityConverter}}"
+            Progress="{Binding Path=LoadingProgress}"/>
+        <ui:ListView
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="{StaticResource RootPanelMargin}"
+            Visibility="{Binding Path=Loaded, Converter={StaticResource VisibilityConverter}}"
+            ItemsSource="{Binding Path=Parties, Mode=OneWay}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            VirtualizingPanel.VirtualizationMode="Recycling"
+            VirtualizingPanel.ScrollUnit="Pixel">
+            <ui:ListView.Resources>
+                <conv:CategoryToIconConverter x:Key="IconConverter"/>
+                <conv:PartySlotsConverter x:Key="PartySlotsConverter"/>
+                <conv:UsernameConverter x:Key="UserNameConverter"/>
+                <conv:WorldConverter x:Key="WorldConverter"/>
+                <conv:ILVToStringConverter x:Key="ILVConverter"/>
+                <conv:TimeLeftToStringConverter x:Key="TimeLeftConverter"/>
+                <conv:UpdatedTimeConverter x:Key="UpdatedTimeConverter"/>
+            </ui:ListView.Resources>
+
+            <ui:ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type core:PartyInfo}">
+                    <Grid
+                        Margin="{StaticResource ListViewItemSpacing}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 根据招募类型展示图标 -->
+                        <Border
+                            Grid.Column="0"
+                            Margin="{StaticResource HorizontalPanelSpacing}"
+                            VerticalAlignment="Center"
+                            CornerRadius="8">
+                            <Image
+                                Width="64"
+                                Height="64"
+                                Source="{Binding Path=Category, Mode=OneTime, Converter={StaticResource IconConverter}}">
+                            </Image>
+                        </Border>
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="{StaticResource HorizontalPanelSpacing}"
+                            VerticalAlignment="Center">
+                            <!-- 队内人数 -->
+                            <ui:TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontTypography="Subtitle">
+                                <ui:TextBlock.Text>
+                                    <MultiBinding Mode="OneTime" Converter="{StaticResource PartySlotsConverter}">
+                                        <Binding Path="Slots_filled" Mode="OneTime"/>
+                                        <Binding Path="Slots_available" Mode="OneTime"/>
+                                    </MultiBinding>
+                                </ui:TextBlock.Text>
+                            </ui:TextBlock>
+                            <!-- 最低装等 -->
+                            <ui:TextBlock
+                                Visibility="{Binding Path=IsIlvSpecified, Mode=OneTime, Converter={StaticResource VisibilityConverter}}"
+                                HorizontalAlignment="Center"
+                                Text="{Binding Path=Min_item_level, Mode=OneTime, Converter={StaticResource ILVConverter}}"
+                                FontSize="13"/>
+                        </StackPanel>
+                        <Grid
+                            Grid.Column="2"
+                            Margin="{StaticResource HorizontalPanelSpacing}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <!-- 发布人id -->
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                VerticalAlignment="Center"
+                                FontTypography="BodyStrong">
+                                <ui:TextBlock.Text>
+                                    <MultiBinding Mode="OneTime" Converter="{StaticResource UserNameConverter}">
+                                        <Binding Path="Name" Mode="OneTime"/>
+                                        <Binding Path="Home_world" Mode="OneTime"/>
+                                    </MultiBinding>
+                                </ui:TextBlock.Text>
+                            </ui:TextBlock>
+                            <!-- 当前服务器 -->
+                            <ui:SymbolIcon
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                Symbol="ServerSurfaceMultiple16"/>
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontTypography="Body">
+                                <ui:TextBlock.Text>
+                                    <MultiBinding Mode="OneTime" Converter="{StaticResource WorldConverter}">
+                                        <Binding Path="Datacenter" Mode="OneTime"/>
+                                        <Binding Path="Created_world" Mode="OneTime"/>
+                                    </MultiBinding>
+                                </ui:TextBlock.Text>
+                            </ui:TextBlock>
+                            <!-- 剩余时间 -->
+                            <ui:SymbolIcon
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                Symbol="Clock16"/>
+                            <ui:TextBlock
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Text="{Binding Path=Time_left, Mode=OneTime, Converter={StaticResource TimeLeftConverter}}"
+                                FontTypography="Body"
+                                VerticalAlignment="Center"/>
+                            <!-- 刷新时间 -->
+                            <ui:SymbolIcon
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                Symbol="ArrowDown16"/>
+                            <ui:TextBlock
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="{Binding Path=Updated_at, Mode=OneTime, Converter={StaticResource UpdatedTimeConverter}}"
+                                FontTypography="Body"
+                                VerticalAlignment="Center"/>
+                        </Grid>
+                        <Separator
+                            Grid.Column="2"
+                            Margin="{StaticResource HorizontalPanelSpacing}"
+                            HorizontalAlignment="Right"/>
+                        <!-- 招募正文 -->
+                        <StackPanel
+                            Grid.Column="3"
+                            Margin="{StaticResource HorizontalPanelSpacing}">
+                            <!-- 标题 -->
+                            <ui:TextBlock
+                                FontTypography="Subtitle"
+                                TextWrapping="Wrap"
+                                Text="{Binding Path=Duty, Mode=OneTime}"
+                                Loaded="DutyName_Loaded"/>
+                            <!-- 详细信息 -->
+                            <ui:TextBlock
+                                FontTypography="Body"
+                                TextWrapping="Wrap"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Path=Description, Mode=OneTime}"
+                                TextTrimming="WordEllipsis"
+                                MaxHeight="60"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ui:ListView.ItemTemplate>
+        </ui:ListView>
+    </Grid>
+</Page>

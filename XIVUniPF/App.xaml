@@ -12,10 +12,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/Dimens.xaml"/>
-                <ui:ThemesDictionary Theme="Light" />
+                <ui:ThemesDictionary Theme="Light"/>
                 <ui:ControlsDictionary />
                 <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
             <tb:TaskbarIcon
                 x:Key="Taskbar"
                 ToolTipText="XIVUniPF"
