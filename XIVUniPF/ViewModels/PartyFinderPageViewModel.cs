@@ -7,7 +7,7 @@ using XIVUniPF.Classes.Filters;
 
 namespace XIVUniPF.ViewModels
 {
-    internal class PartyFinderPageViewModel : INotifyPropertyChanged
+    public class PartyFinderPageViewModel : INotifyPropertyChanged
     {
         private bool _isLoading;
 

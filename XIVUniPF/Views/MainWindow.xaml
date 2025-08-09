@@ -28,7 +28,7 @@
         <WindowChrome x:Key="CustomChrome">
             <WindowChrome.UseAeroCaptionButtons>false</WindowChrome.UseAeroCaptionButtons>
             <WindowChrome.CaptionHeight>0</WindowChrome.CaptionHeight>
-            <WindowChrome.ResizeBorderThickness>5</WindowChrome.ResizeBorderThickness>
+            <WindowChrome.ResizeBorderThickness>4</WindowChrome.ResizeBorderThickness>
             <WindowChrome.GlassFrameThickness>0</WindowChrome.GlassFrameThickness>
         </WindowChrome>
     </Window.Resources>
@@ -41,14 +41,15 @@
         
         <!-- 标题栏 -->
         <ui:TitleBar
-            Grid.Row="0"
             x:Name="TitleBar"
+            Grid.Row="0"
             Title="XIVUniPF"
             CloseWindowByDoubleClickOnIcon="True">
         </ui:TitleBar>
         <Frame
+            x:Name="MainFrame"
             Grid.Row="1"
-            x:Name="MainFrame">
+            Margin="{StaticResource RootPanelMargin}">
         </Frame>
     </Grid>
 </Window>

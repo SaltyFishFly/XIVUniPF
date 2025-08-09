@@ -44,7 +44,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
@@ -53,11 +53,12 @@
             x:Name="Toolbar"
             Grid.Column="0"
             Grid.Row="0"
-            Margin="{StaticResource ToolbarPanelMargin}"
+            Margin="{StaticResource VerticalPanelSpacingStart}"
             LastChildFill="False">
             <!-- 刷新按钮 -->
             <ui:Button
                 DockPanel.Dock="Left"
+                Margin="8,0,0,0"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 IsEnabled="{Binding Path=Loaded}"
                 Content="刷新"
@@ -168,7 +169,7 @@
         <ui:ListView
             Grid.Column="0"
             Grid.Row="1"
-            Margin="{StaticResource RootPanelMargin}"
+            Margin="{StaticResource VerticalPanelSpacingEnd}"
             Visibility="{Binding Path=Loaded, Converter={StaticResource VisibilityConverter}}"
             ItemsSource="{Binding Path=Parties, Mode=OneWay}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"

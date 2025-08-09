@@ -2,10 +2,15 @@
     x:Class="XIVUniPF.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:XIVUniPF"
-    xmlns:vm="clr-namespace:XIVUniPF.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:tb="http://www.hardcodet.net/taskbar"
+    xmlns:local="clr-namespace:XIVUniPF"
+    xmlns:c="clr-namespace:XIVUniPF.Classes"
+    xmlns:vm="clr-namespace:XIVUniPF.ViewModels"
+    xmlns:conv="clr-namespace:XIVUniPF.Converters"
+    xmlns:core="clr-namespace:XIVUniPF_Core;assembly=XIVUniPF-Core"
     StartupUri="Views/MainWindow.xaml"
     ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
@@ -16,9 +21,11 @@
                 <ui:ControlsDictionary />
                 <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
             <tb:TaskbarIcon
                 x:Key="Taskbar"
+                Visibility="{Binding Source={x:Static local:App.Config}, Path=TrayEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
                 ToolTipText="XIVUniPF"
                 IconSource="pack://application:,,,/Assets/PartyFinder@1x.png"
                 LeftClickCommand="{Binding Path=ShowWindowCommand}"

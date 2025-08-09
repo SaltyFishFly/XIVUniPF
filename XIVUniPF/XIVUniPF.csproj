@@ -98,6 +98,7 @@
     <PackageReference Include="WPF-UI" Version="4.0.3" />
     <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.3" />
     <PackageReference Include="WPF-UI.Tray" Version="4.0.3" />
+    <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 
   <ItemGroup>

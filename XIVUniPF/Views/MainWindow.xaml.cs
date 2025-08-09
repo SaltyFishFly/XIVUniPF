@@ -37,5 +37,13 @@ namespace XIVUniPF.Views
         {
             NavigateToPartyFinderPage();
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            if (!App.Config.TrayEnabled)
+                App.Current.Shutdown();
+        }
     }
 }

@@ -4,7 +4,7 @@
     {
         // 获取的 id 是我瞎编的
         // 为什么猪区在猫区前面，因为作者是猪区人（?）
-        public static int getDatacenterId(string name)
+        public static int GetDatacenterId(string name)
         {
             return name switch
             {

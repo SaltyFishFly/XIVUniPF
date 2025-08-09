@@ -47,8 +47,8 @@ namespace XIVUniPF.Classes
         public static readonly PartySortOption Datacenter =
             new("所在大区", (a, b) =>
             {
-                var aId = Utils.getDatacenterId(a.Datacenter);
-                var bId = Utils.getDatacenterId(b.Datacenter);
+                var aId = Utils.GetDatacenterId(a.Datacenter);
+                var bId = Utils.GetDatacenterId(b.Datacenter);
                 if (aId < bId)
                     return -1;
                 if (aId > bId)

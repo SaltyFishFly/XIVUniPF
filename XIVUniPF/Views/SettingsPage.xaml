@@ -5,11 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:root="clr-namespace:XIVUniPF"
     xmlns:local="clr-namespace:XIVUniPF.Views"
     xmlns:c="clr-namespace:XIVUniPF.Classes"
     xmlns:vm="clr-namespace:XIVUniPF.ViewModels"
     xmlns:conv="clr-namespace:XIVUniPF.Converters"
     xmlns:core="clr-namespace:XIVUniPF_Core;assembly=XIVUniPF-Core"
+    xmlns:controls="clr-namespace:XIVUniPF.Controls"
     d:DataContext="{d:DesignInstance Type=vm:SettingsPageViewModel}"
     mc:Ignorable="d" 
     Title="PartyFinderView"
@@ -19,6 +21,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,11 +32,12 @@
         <DockPanel
             x:Name="Toolbar"
             Grid.Column="0"
+            Grid.ColumnSpan="2"
             Grid.Row="0"
-            Margin="{StaticResource ToolbarPanelMargin}"
+            Margin="{StaticResource VerticalPanelSpacingStart}"
             LastChildFill="False">
             <ui:TextBlock
-                Margin="16,0,0,0"
+                Margin="8,0,0,0"
                 Text="设置"
                 FontTypography="TitleLarge"/>
             <!-- 设置 -->
@@ -50,5 +54,17 @@
                 </ui:Button.Icon>
             </ui:Button>
         </DockPanel>
+        <!-- 托盘图标 -->
+        <StackPanel
+            Grid.Column="0"
+            Grid.Row="1">
+            <controls:SettingPresenter
+                Symbol="DesktopMac24"
+                Title="启用托盘图标"
+                Subtitle="允许应用窗口关闭后在托盘继续运行">
+                <ui:ToggleSwitch
+                    IsChecked="{Binding Source={x:Static root:App.Config}, Path=TrayEnabled}"/>
+            </controls:SettingPresenter>
+        </StackPanel>
     </Grid>
 </Page>
