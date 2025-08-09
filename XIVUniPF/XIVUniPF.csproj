@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Classes\BezierEase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\DutyIcons\deepdungeon.png" />
     <None Remove="Assets\DutyIcons\dungeons.png" />
     <None Remove="Assets\DutyIcons\dutyroulette.png" />

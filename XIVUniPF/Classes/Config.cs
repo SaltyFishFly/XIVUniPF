@@ -76,6 +76,48 @@ namespace XIVUniPF.Classes
             }
         }
 
+        private bool _autoCheckUpdates = true;
+        public bool AutoCheckUpdates
+        {
+            get => _autoCheckUpdates;
+            set
+            {
+                if (_autoCheckUpdates != value)
+                {
+                    _autoCheckUpdates = value;
+                    Notify();
+                }
+            }
+        }
+
+        private bool _autoRefresh = false;
+        public bool AutoRefresh
+        {
+            get => _autoRefresh;
+            set
+            {
+                if (_autoRefresh != value)
+                {
+                    _autoRefresh = value;
+                    Notify();
+                }
+            }
+        }
+
+        private double _autoRefreshInverval = 30;
+        public double AutoRefreshInterval
+        {
+            get => _autoRefreshInverval;
+            set
+            {
+                if (_autoRefreshInverval != value)
+                {
+                    _autoRefreshInverval = value;
+                    Notify();
+                }
+            }
+        }
+
         // 实现接口
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void Notify([CallerMemberName] string? prop = null)

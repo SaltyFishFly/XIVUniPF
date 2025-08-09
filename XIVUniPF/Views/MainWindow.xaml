@@ -31,6 +31,12 @@
             <WindowChrome.ResizeBorderThickness>4</WindowChrome.ResizeBorderThickness>
             <WindowChrome.GlassFrameThickness>0</WindowChrome.GlassFrameThickness>
         </WindowChrome>
+        <local:PartyFinderPage
+            x:Key="PartyFinderPage"
+            SettingsButtonClicked="PartyFinderPage_SettingsButtonClicked"/>
+        <local:SettingsPage
+            x:Key="SettingsPage"
+            BackButtonClicked="SettingsPage_BackButtonClicked"/>
     </Window.Resources>
 
     <Grid>
@@ -49,7 +55,8 @@
         <Frame
             x:Name="MainFrame"
             Grid.Row="1"
-            Margin="{StaticResource RootPanelMargin}">
+            Margin="{StaticResource RootPanelMargin}"
+            Navigated="MainFrame_Navigated">
         </Frame>
     </Grid>
 </Window>

@@ -12,7 +12,8 @@
     xmlns:conv="clr-namespace:XIVUniPF.Converters"
     xmlns:core="clr-namespace:XIVUniPF_Core;assembly=XIVUniPF-Core"
     StartupUri="Views/MainWindow.xaml"
-    ShutdownMode="OnExplicitShutdown">
+    ShutdownMode="OnExplicitShutdown"
+    xmlns:Controls="clr-namespace:XIVUniPF.Controls">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

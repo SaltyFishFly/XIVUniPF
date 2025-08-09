@@ -56,7 +56,8 @@
         </DockPanel>
         <StackPanel
             Grid.Column="0"
-            Grid.Row="1">
+            Grid.Row="1"
+            Margin="{StaticResource HorizontalPanelSpacing}">
             <!-- 托盘图标 -->
             <controls:SettingPresenter
                 Margin="{StaticResource VerticalPanelSpacing}"
@@ -75,6 +76,72 @@
                 <ui:ToggleSwitch
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=UseSystemProxy}"/>
             </controls:SettingPresenter>
+            <!-- 更新检查 -->
+            <controls:SettingPresenter
+                Margin="{StaticResource VerticalPanelSpacing}"
+                Symbol="CommentNote24"
+                Title="自动检查更新"
+                Subtitle="发现新版本时发送通知">
+                <ui:ToggleSwitch
+                    IsChecked="{Binding Source={x:Static root:App.Config}, Path=AutoCheckUpdates}"/>
+            </controls:SettingPresenter>
+            <!-- 自动刷新 -->
+            <controls:SettingPresenter
+                x:Name="AutoRefreshToggle"
+                Margin="{StaticResource VerticalPanelSpacing}"
+                Symbol="ArrowClockwise24"
+                Title="启用自动刷新"
+                Subtitle="每隔一定时间自动刷新招募">
+                <ui:ToggleSwitch
+                    IsChecked="{Binding Source={x:Static root:App.Config}, Path=AutoRefresh}"/>
+            </controls:SettingPresenter>
+            <controls:SettingPresenter
+                Margin="{StaticResource VerticalPanelSpacing}"
+                Symbol="ArrowClockwise24"
+                Title="自动刷新间隔"
+                Subtitle="单位为秒">
+                <Slider
+                    Width="200"
+                    Maximum="300"
+                    Minimum="30"
+                    TickFrequency="1"
+                    Value="{Binding Source={x:Static root:App.Config}, Path=AutoRefreshInterval}"
+                    AutoToolTipPlacement="TopLeft">
+                </Slider>
+            </controls:SettingPresenter>
         </StackPanel>
+        <ui:Card
+            Grid.Column="1"
+            Grid.Row="1"
+            Margin="{StaticResource ListViewItemSpacing}"
+            VerticalAlignment="Top">
+            <ui:Card.Style>
+                <Style TargetType="ui:Card" BasedOn="{StaticResource {x:Type ui:Card}}">
+                    <Setter Property="Border.CornerRadius" Value="8"/>
+                </Style>
+            </ui:Card.Style>
+            <StackPanel>
+                <ui:TextBlock
+                    Margin="{StaticResource VerticalPanelSpacing}"
+                    FontTypography="Subtitle"
+                    Text="关于"/>
+                <ui:TextBlock
+                    FontTypography="Body">
+                    <Run>XIVUniPF v1.2.0</Run>
+                    <LineBreak/>
+                    <Run>本应用使用GNU LGPLv3协议开源</Run>
+                </ui:TextBlock>
+                <ui:TextBlock>
+                    <ui:HyperlinkButton
+                        Margin="{StaticResource VerticalPanelSpacing}"
+                        Content="GitHub"
+                        NavigateUri="https://github.com/SaltyFishFly/XIVUniPF"/>
+                    <ui:HyperlinkButton
+                        Margin="{StaticResource VerticalPanelSpacing}"
+                        Content="NGA"
+                        NavigateUri="https://ngabbs.com/read.php?tid=44491126"/>
+                </ui:TextBlock>
+            </StackPanel>
+        </ui:Card>
     </Grid>
 </Page>

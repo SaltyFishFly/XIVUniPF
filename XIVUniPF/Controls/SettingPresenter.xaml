@@ -13,10 +13,17 @@
     xmlns:core="clr-namespace:XIVUniPF_Core;assembly=XIVUniPF-Core"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800">
+    <!-- CardControl 圆角半径设为 8 -->
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ui:CardControl}" BasedOn="{StaticResource DefaultUiCardControlStyle}">
+            <Setter Property="CornerRadius" Value="8"/>
+        </Style>
+    </UserControl.Resources>
 
     <ui:CardControl>
         <ui:CardControl.Icon>
             <ui:SymbolIcon
+                FontSize="28"
                 Symbol="{Binding Symbol, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
         </ui:CardControl.Icon>
         <ui:CardControl.Header>
@@ -27,7 +34,7 @@
                 </Grid.RowDefinitions>
                 <ui:TextBlock
                     Grid.Row="0"
-                    FontTypography="Body"
+                    FontTypography="BodyStrong"
                     Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                 <ui:TextBlock
                     Grid.Row="1"
@@ -36,7 +43,8 @@
             </Grid>
         </ui:CardControl.Header>
         
-        <ContentPresenter Content="{Binding Content, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        <ContentPresenter
+            Content="{Binding Content, RelativeSource={RelativeSource AncestorType=UserControl}}" />
         
     </ui:CardControl>
 </UserControl>
