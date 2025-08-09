@@ -23,9 +23,7 @@ namespace XIVUniPF.Views
 
         private void NavigateToSettingsPage()
         {
-            var settingsPage = new SettingsPage();
-            MainFrame.Navigate(settingsPage);
-            settingsPage.BackButtonClicked += SettingsPage_BackButtonClicked;
+            MainFrame.Navigate(SettingsPage.Instance);
         }
 
         private void PartyFinderPage_SettingsButtonClicked(object sender, RoutedEventArgs e)

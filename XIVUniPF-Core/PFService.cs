@@ -57,17 +57,29 @@ namespace XIVUniPF_Core
 
         public event PartyFinderUpdateEventHandler? OnPartyFinderUpdate;
 
+        private readonly HttpClient clientProxy;
         private readonly HttpClient client;
 
         private PartyList parties;
 
         public PFService()
         {
-            client = new HttpClient()
+            var noProxy = new HttpClientHandler()
+            {
+                UseProxy = false
+            };
+            client = new HttpClient(noProxy)
             {
                 BaseAddress = new Uri(Server)
             };
             client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.1 (contact: gfishfly@qq.com)");
+
+            clientProxy = new HttpClient()
+            {
+                BaseAddress = new Uri(Server)
+            };
+            client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.1 (contact: gfishfly@qq.com)");
+
             parties = new PartyList();
         }
 
@@ -84,15 +96,13 @@ namespace XIVUniPF_Core
         /// <param name="option">选项</param>
         /// <param name="progressCallback">进度更新时的回调函数 float为进度条增量</param>
         /// <returns></returns>
-        public async Task Update(PFService.Option option, Action<float>? progressCallback = null)
+        public async Task Update(Option option, Action<float>? progressCallback = null, bool useProxy = true)
         {
-
-
             option.Page = 1;
             option.PerPage = 100;
 
             // 先发一个请求，知道总共有多少页
-            PartyList result = await Fetch(option);
+            PartyList result = await Fetch(option, useProxy);
             var pages = result.Pagination.Total_pages;
             progressCallback?.Invoke(100f / pages);
 
@@ -102,7 +112,7 @@ namespace XIVUniPF_Core
             {
                 option.Page = i;
 
-                var task = Fetch(option).ContinueWith(t =>
+                var task = Fetch(option, useProxy).ContinueWith(t =>
                 {
                     progressCallback?.Invoke(100f / pages);
                     return t.Result;
@@ -124,7 +134,7 @@ namespace XIVUniPF_Core
             OnPartyFinderUpdate?.Invoke(this);
         }
 
-        private async Task<PartyList> Fetch(PFService.Option option)
+        private async Task<PartyList> Fetch(Option option, bool useProxy)
         {
             var endpoint = new StringBuilder("/api/listings");
             try
@@ -145,7 +155,11 @@ namespace XIVUniPF_Core
                     endpoint.Append($"&duty={Uri.EscapeDataString(option.Duty)}");
 
                 var url = endpoint.ToString();
-                using var response = await client.GetAsync(url);
+                using var response = useProxy switch
+                {
+                    true => await clientProxy.GetAsync(url),
+                    false => await client.GetAsync(url),
+                };
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();

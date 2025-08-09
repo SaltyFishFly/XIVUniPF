@@ -98,7 +98,6 @@
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
-                IsEnabled="{Binding Path=IsNextButtonEnabled}"
                 Click="Settings_Button_Click">
                 <ui:Button.Icon>
                     <ui:SymbolIcon

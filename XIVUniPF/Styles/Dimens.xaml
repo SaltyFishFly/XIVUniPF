@@ -5,6 +5,7 @@
     <Thickness x:Key="RootPanelMargin" Left="16" Top="0" Right="16" Bottom="0"/>
     <Thickness x:Key="HorizontalPanelSpacing" Left="6" Top="0" Right="6" Bottom="0"/>
     <Thickness x:Key="VerticalPanelSpacingStart" Left="0" Top="0" Right="0" Bottom="6"/>
+    <Thickness x:Key="VerticalPanelSpacing" Left="0" Top="6" Right="0" Bottom="6"/>
     <Thickness x:Key="VerticalPanelSpacingEnd" Left="0" Top="6" Right="0" Bottom="0"/>
     <Thickness x:Key="ListViewItemSpacing" Left="6" Top="6" Right="6" Bottom="6"/>
 </ResourceDictionary>

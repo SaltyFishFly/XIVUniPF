@@ -54,16 +54,26 @@
                 </ui:Button.Icon>
             </ui:Button>
         </DockPanel>
-        <!-- 托盘图标 -->
         <StackPanel
             Grid.Column="0"
             Grid.Row="1">
+            <!-- 托盘图标 -->
             <controls:SettingPresenter
+                Margin="{StaticResource VerticalPanelSpacing}"
                 Symbol="DesktopMac24"
-                Title="启用托盘图标"
+                Title="后台运行"
                 Subtitle="允许应用窗口关闭后在托盘继续运行">
                 <ui:ToggleSwitch
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=TrayEnabled}"/>
+            </controls:SettingPresenter>
+            <!-- 使用代理 -->
+            <controls:SettingPresenter
+                Margin="{StaticResource VerticalPanelSpacing}"
+                Symbol="VirtualNetwork20"
+                Title="使用代理"
+                Subtitle="发出网络请求时使用系统代理">
+                <ui:ToggleSwitch
+                    IsChecked="{Binding Source={x:Static root:App.Config}, Path=UseSystemProxy}"/>
             </controls:SettingPresenter>
         </StackPanel>
     </Grid>

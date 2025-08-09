@@ -8,9 +8,6 @@ using XIVUniPF_Core;
 
 namespace XIVUniPF.Views
 {
-    /// <summary>
-    /// PartyFinderView.xaml 的交互逻辑
-    /// </summary>
     public partial class PartyFinderPage : Page
     {
         private static readonly SolidColorBrush localPartyTextColor = new(Color.FromRgb(0xE0, 0xA9, 0x33));
@@ -60,7 +57,8 @@ namespace XIVUniPF.Views
 
                 await PFService.Instance.Update(
                     option,
-                    delta => Dispatcher.Invoke(() => ViewModel.LoadingProgress += delta)
+                    delta => Dispatcher.Invoke(() => ViewModel.LoadingProgress += delta),
+                    App.Config.UseSystemProxy
                 );
             }
             catch (Exception)

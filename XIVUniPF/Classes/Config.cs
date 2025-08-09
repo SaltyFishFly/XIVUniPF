@@ -48,8 +48,7 @@ namespace XIVUniPF.Classes
 
     public class AppConfig : INotifyPropertyChanged
     {
-        private bool _trayEnabled;
-
+        private bool _trayEnabled = true;
         public bool TrayEnabled
         {
             get => _trayEnabled;
@@ -63,9 +62,18 @@ namespace XIVUniPF.Classes
             }
         }
 
-        public AppConfig()
+        private bool _useSystemProxy = true;
+        public bool UseSystemProxy
         {
-            _trayEnabled = true;
+            get => _useSystemProxy;
+            set
+            {
+                if (_useSystemProxy != value)
+                {
+                    _useSystemProxy = value;
+                    Notify();
+                }
+            }
         }
 
         // 实现接口
