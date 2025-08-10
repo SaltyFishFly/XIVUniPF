@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:root="clr-namespace:XIVUniPF"
     xmlns:local="clr-namespace:XIVUniPF.Views"
     xmlns:c="clr-namespace:XIVUniPF.Classes"
@@ -58,6 +59,34 @@
             Grid.Column="0"
             Grid.Row="1"
             Margin="{StaticResource HorizontalPanelSpacing}">
+            <!-- 颜色模式 -->
+            <controls:SettingPresenter
+                Margin="{StaticResource VerticalPanelSpacing}"
+                Symbol="DesktopMac24"
+                Title="颜色模式"
+                Subtitle="选择应用的配色方案">
+                <controls:SettingPresenter.Resources>
+                    <x:Array
+                        x:Key="ModeList"
+                        Type="{x:Type sys:String}">
+                        <sys:String>跟随系统</sys:String>
+                        <sys:String>浅色</sys:String>
+                        <sys:String>深色</sys:String>
+                    </x:Array>
+                </controls:SettingPresenter.Resources>
+                
+                <ComboBox 
+                    ItemsSource="{StaticResource ModeList}"
+                    SelectedIndex="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <ui:TextBlock
+                            Text="{Binding}"
+                            FontTypography="Body"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </controls:SettingPresenter>
             <!-- 托盘图标 -->
             <controls:SettingPresenter
                 Margin="{StaticResource VerticalPanelSpacing}"
