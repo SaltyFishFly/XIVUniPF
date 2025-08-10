@@ -67,17 +67,16 @@
                 Subtitle="选择应用的配色方案">
                 <controls:SettingPresenter.Resources>
                     <x:Array
-                        x:Key="ModeList"
+                        x:Key="ThemeList"
                         Type="{x:Type sys:String}">
-                        <sys:String>跟随系统</sys:String>
                         <sys:String>浅色</sys:String>
                         <sys:String>深色</sys:String>
                     </x:Array>
                 </controls:SettingPresenter.Resources>
-                
                 <ComboBox 
-                    ItemsSource="{StaticResource ModeList}"
-                    SelectedIndex="0">
+                    ItemsSource="{StaticResource ThemeList}"
+                    SelectedIndex="{Binding Source={x:Static root:App.Config}, Path=ThemeIndex}"
+                    SelectionChanged="Theme_SelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <ui:TextBlock
@@ -117,6 +116,7 @@
             <!-- 自动刷新 -->
             <controls:SettingPresenter
                 x:Name="AutoRefreshToggle"
+                Visibility="Hidden"
                 Margin="{StaticResource VerticalPanelSpacing}"
                 Symbol="ArrowClockwise24"
                 Title="启用自动刷新"
@@ -125,6 +125,7 @@
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=AutoRefresh}"/>
             </controls:SettingPresenter>
             <controls:SettingPresenter
+                Visibility="Hidden"
                 Margin="{StaticResource VerticalPanelSpacing}"
                 Symbol="ArrowClockwise24"
                 Title="自动刷新间隔"
@@ -156,7 +157,8 @@
                     Text="关于"/>
                 <ui:TextBlock
                     FontTypography="Body">
-                    <Run>XIVUniPF v1.2.0</Run>
+                    <Run>XIVUniPF</Run>
+                    <Run Text="{Binding Source={x:Static root:App.Version}, Mode=OneTime}"/>
                     <LineBreak/>
                     <Run>本应用使用GNU LGPLv3协议开源</Run>
                 </ui:TextBlock>

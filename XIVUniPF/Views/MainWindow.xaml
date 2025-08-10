@@ -1,4 +1,4 @@
-﻿<Window
+﻿<ui:FluentWindow
     x:Class="XIVUniPF.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,26 +18,18 @@
     Width="1200"
     Height="800"
     DataContext="{DynamicResource ViewModel}"
-    WindowStyle="None"
-    WindowStartupLocation="CenterScreen"
-    WindowChrome.WindowChrome="{DynamicResource CustomChrome}"
-    Icon="pack://application:,,,/Assets/PartyFinder@2x.png">
-    <Window.Resources>
+    ExtendsContentIntoTitleBar="True"
+    WindowBackdropType="Mica"
+    WindowStartupLocation="CenterScreen">
+    <ui:FluentWindow.Resources>
         <vm:MainViewModel x:Key="ViewModel"/>
-        <!-- 自定义边框 -->
-        <WindowChrome x:Key="CustomChrome">
-            <WindowChrome.UseAeroCaptionButtons>false</WindowChrome.UseAeroCaptionButtons>
-            <WindowChrome.CaptionHeight>0</WindowChrome.CaptionHeight>
-            <WindowChrome.ResizeBorderThickness>4</WindowChrome.ResizeBorderThickness>
-            <WindowChrome.GlassFrameThickness>0</WindowChrome.GlassFrameThickness>
-        </WindowChrome>
         <local:PartyFinderPage
             x:Key="PartyFinderPage"
             SettingsButtonClicked="PartyFinderPage_SettingsButtonClicked"/>
         <local:SettingsPage
             x:Key="SettingsPage"
             BackButtonClicked="SettingsPage_BackButtonClicked"/>
-    </Window.Resources>
+    </ui:FluentWindow.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -59,4 +51,4 @@
             Navigated="MainFrame_Navigated">
         </Frame>
     </Grid>
-</Window>
+</ui:FluentWindow>

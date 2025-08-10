@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using Wpf.Ui.Controls;
 using XIVUniPF.ViewModels;
 
 namespace XIVUniPF.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : FluentWindow
     {
         private MainViewModel ViewModel => (MainViewModel)DataContext;
 

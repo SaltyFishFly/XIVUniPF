@@ -2,16 +2,16 @@
 using Microsoft.Toolkit.Uwp.Notifications;
 using System.IO;
 using System.Net.Http;
-using System.Security.Policy;
 using System.Text.Json;
 using System.Windows;
+using Wpf.Ui.Appearance;
 using XIVUniPF.Classes;
 
 namespace XIVUniPF
 {
     public partial class App : Application
     {
-        public static readonly string Version = "v0.1.0";
+        public static readonly string Version = "v0.2.0";
 
         public static AppConfig Config => ((App)Current)._config!;
 
@@ -22,19 +22,25 @@ namespace XIVUniPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            
-            // 同步系统主题
-            // 实验性 API
-#pragma warning disable WPF0001
-            ThemeMode = ThemeMode.System;
-#pragma warning restore WPF0001
 
+            // 加载设置
             string cfgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.yaml");
             configManager = new YamlConfigManager<AppConfig>(cfgPath);
             _config = configManager.Load();
 
+            // 设置主题
+            var theme = App.Config.ThemeIndex switch
+            {
+                0 => ApplicationTheme.Light,
+                1 => ApplicationTheme.Dark,
+                _ => throw new ArgumentOutOfRangeException("ThemeIndex超出范围")
+            };
+            ApplicationThemeManager.Apply(theme);
+
+            // 托盘图标
             trayIcon = (TaskbarIcon)FindResource("Taskbar");
 
+            // 检查更新
             _ = CheckUpdate();
         }
 

@@ -48,6 +48,20 @@ namespace XIVUniPF.Classes
 
     public class AppConfig : INotifyPropertyChanged
     {
+        private int _themeIndex = 0;
+        public int ThemeIndex
+        {
+            get => _themeIndex;
+            set
+            {
+                if (_themeIndex != value)
+                {
+                    _themeIndex = value;
+                    Notify();
+                }
+            }
+        }
+
         private bool _trayEnabled = true;
         public bool TrayEnabled
         {
