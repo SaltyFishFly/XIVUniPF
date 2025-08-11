@@ -60,6 +60,7 @@
                 DockPanel.Dock="Left"
                 Margin="8,0,0,0"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                TabIndex="0"
                 IsEnabled="{Binding Path=Loaded}"
                 Content="刷新"
                 Click="Refresh_Button_Click">
@@ -81,6 +82,7 @@
             <ComboBox
                 DockPanel.Dock="Left"
                 Margin="{StaticResource HorizontalPanelSpacing}"
+                TabIndex="1"
                 IsEnabled="{Binding Path=Loaded}"
                 SelectedItem="{Binding Path=Parties.SortOption}"
                 ItemsSource="{Binding Path=SortOptions}"
@@ -98,6 +100,7 @@
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
+                TabIndex="5"
                 Click="Settings_Button_Click">
                 <ui:Button.Icon>
                     <ui:SymbolIcon
@@ -112,6 +115,7 @@
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
+                TabIndex="3"
                 IsEnabled="{Binding Path=IsNextButtonEnabled}"
                 Click="Next_Button_Click">
                 <ui:Button.Icon>
@@ -131,6 +135,7 @@
                 DockPanel.Dock="Right"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
+                TabIndex="4"
                 IsEnabled="{Binding Path=IsPrevButtonEnabled}"
                 Click="Prev_Button_Click">
                 <ui:Button.Icon>
@@ -144,6 +149,7 @@
                 MinWidth="128"
                 Width="200"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
+                TabIndex="2"
                 IsEnabled="{Binding Path=Loaded}"
                 VerticalAlignment="Center"
                 PlaceholderText="关键词搜索"
@@ -168,12 +174,13 @@
         <ui:ListView
             Grid.Column="0"
             Grid.Row="1"
+            Focusable="False"
             Margin="{StaticResource VerticalPanelSpacingEnd}"
             Visibility="{Binding Path=Loaded, Converter={StaticResource VisibilityConverter}}"
-            ItemsSource="{Binding Path=Parties, Mode=OneWay}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             VirtualizingPanel.VirtualizationMode="Recycling"
-            VirtualizingPanel.ScrollUnit="Pixel">
+            VirtualizingPanel.ScrollUnit="Pixel"
+            ItemsSource="{Binding Path=Parties, Mode=OneWay}">
             <ui:ListView.Resources>
                 <conv:CategoryToIconConverter x:Key="IconConverter"/>
                 <conv:PartySlotsConverter x:Key="PartySlotsConverter"/>
@@ -183,7 +190,13 @@
                 <conv:TimeLeftToStringConverter x:Key="TimeLeftConverter"/>
                 <conv:UpdatedTimeConverter x:Key="UpdatedTimeConverter"/>
             </ui:ListView.Resources>
-
+            <ui:ListView.ItemContainerStyle>
+                <Style 
+                    TargetType="ui:ListViewItem" BasedOn="{StaticResource {x:Type ui:ListViewItem}}">
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}"/>
+                </Style>
+            </ui:ListView.ItemContainerStyle>
+            
             <ui:ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type core:PartyInfo}">
                     <Grid
