@@ -13,6 +13,7 @@ namespace XIVUniPF
     {
         public static readonly string Version = "v0.2.0";
 
+        private static Mutex? _processMutex;
         public static AppConfig Config => ((App)Current)._config!;
 
         private YamlConfigManager<AppConfig>? configManager;
@@ -22,6 +23,14 @@ namespace XIVUniPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            // 确保单例运行
+            _processMutex = new Mutex(true, "XIVUniPFApp", out bool success);
+            if (!success)
+            {
+                Shutdown();
+                return;
+            }
 
             // 加载设置
             string cfgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.yaml");
@@ -33,7 +42,7 @@ namespace XIVUniPF
             {
                 0 => ApplicationTheme.Light,
                 1 => ApplicationTheme.Dark,
-                _ => throw new ArgumentOutOfRangeException("ThemeIndex超出范围")
+                _ => throw new IndexOutOfRangeException("ThemeIndex超出范围")
             };
             ApplicationThemeManager.Apply(theme);
 
@@ -41,7 +50,8 @@ namespace XIVUniPF
             trayIcon = (TaskbarIcon)FindResource("Taskbar");
 
             // 检查更新
-            _ = CheckUpdate();
+            if (Config.AutoCheckUpdates)
+                _ = CheckUpdate();
         }
 
         private async Task CheckUpdate()
@@ -63,20 +73,19 @@ namespace XIVUniPF
             try
             {
                 // 从 GitHub API 获取最新 release
-                using var http = new HttpClient();
+                var handler = new HttpClientHandler
+                {
+                    UseProxy = Config.UseSystemProxy
+                };
+                using var http = new HttpClient(handler);
                 http.DefaultRequestHeaders.UserAgent.ParseAdd("XIVUniPF-Updater");
                 var json = await http.GetStringAsync("https://api.github.com/repos/SaltyFishFly/XIVUniPF/releases/latest");
                 using var doc = JsonDocument.Parse(json);
-                var latestTag = doc.RootElement.GetProperty("tag_name").GetString();
 
+                var latestTag = doc.RootElement.GetProperty("tag_name").GetString();
                 if (string.IsNullOrWhiteSpace(latestTag))
                     return;
-
-                // 去掉 'v'
-                var latestVersion = latestTag.TrimStart('v');
-                var currentVersion = App.Version.TrimStart('v');
-
-                if (IsNewerVersion(latestVersion, currentVersion))
+                if (IsNewerVersion(latestTag.TrimStart('v'), App.Version.TrimStart('v')))
                 {
                     // 弹出通知
                     new ToastContentBuilder()
@@ -86,7 +95,14 @@ namespace XIVUniPF
                         .Show();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                new ToastContentBuilder()
+                    .AddText("检查更新失败")
+                    .AddText("可能是与GitHub的连接不稳定，请稍后再试。")
+                    .AddText($"错误信息: {ex.Message}")
+                    .Show();
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
