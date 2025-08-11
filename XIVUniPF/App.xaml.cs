@@ -29,7 +29,7 @@ namespace XIVUniPF
             if (!success)
             {
                 Shutdown();
-                return;
+                Environment.Exit(0);
             }
 
             // 加载设置
