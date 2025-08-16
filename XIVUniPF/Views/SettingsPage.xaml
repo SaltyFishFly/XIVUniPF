@@ -62,8 +62,8 @@
             <!-- 颜色模式 -->
             <controls:SettingPresenter
                 Margin="{StaticResource VerticalPanelSpacing}"
-                Symbol="DesktopMac24"
-                Title="颜色模式"
+                Symbol="Color24"
+                Title="主题"
                 Subtitle="选择应用的配色方案">
                 <controls:SettingPresenter.Resources>
                     <x:Array
@@ -116,24 +116,22 @@
             <!-- 自动刷新 -->
             <controls:SettingPresenter
                 x:Name="AutoRefreshToggle"
-                Visibility="Hidden"
                 Margin="{StaticResource VerticalPanelSpacing}"
                 Symbol="ArrowClockwise24"
-                Title="启用自动刷新"
-                Subtitle="每隔一定时间自动刷新招募">
+                Title="自动刷新"
+                Subtitle="窗口在后台时按间隔自动刷新招募">
                 <ui:ToggleSwitch
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=AutoRefresh}"/>
             </controls:SettingPresenter>
             <controls:SettingPresenter
-                Visibility="Hidden"
                 Margin="{StaticResource VerticalPanelSpacing}"
-                Symbol="ArrowClockwise24"
+                Symbol="Timer24"
                 Title="自动刷新间隔"
                 Subtitle="单位为秒">
                 <Slider
-                    Width="200"
+                    Width="150"
                     Maximum="300"
-                    Minimum="30"
+                    Minimum="60"
                     TickFrequency="1"
                     Value="{Binding Source={x:Static root:App.Config}, Path=AutoRefreshInterval}"
                     AutoToolTipPlacement="TopLeft">
@@ -152,7 +150,7 @@
             </ui:Card.Style>
             <StackPanel>
                 <ui:TextBlock
-                    Margin="{StaticResource VerticalPanelSpacing}"
+                    Margin="{StaticResource VerticalPanelSpacingStart}"
                     FontTypography="Subtitle"
                     Text="关于"/>
                 <ui:TextBlock
@@ -160,15 +158,16 @@
                     <Run>XIVUniPF</Run>
                     <Run Text="{Binding Source={x:Static root:App.Version}, Mode=OneTime}"/>
                     <LineBreak/>
-                    <Run>本应用使用GNU LGPLv3协议开源</Run>
+                    <Run>本应用使用 GNU AGPL v3 协议开源</Run>
+                    <LineBreak/>
+                    <Run>如果你喜欢，欢迎给项目点个Star！</Run>
                 </ui:TextBlock>
-                <ui:TextBlock>
+                <ui:TextBlock
+                    Margin="{StaticResource VerticalPanelSpacingEnd}">
                     <ui:HyperlinkButton
-                        Margin="{StaticResource VerticalPanelSpacing}"
                         Content="GitHub"
                         NavigateUri="https://github.com/SaltyFishFly/XIVUniPF"/>
                     <ui:HyperlinkButton
-                        Margin="{StaticResource VerticalPanelSpacing}"
                         Content="NGA"
                         NavigateUri="https://ngabbs.com/read.php?tid=44491126"/>
                 </ui:TextBlock>

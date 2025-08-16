@@ -118,7 +118,7 @@ namespace XIVUniPF.Classes
             }
         }
 
-        private double _autoRefreshInverval = 30;
+        private double _autoRefreshInverval = 60;
         public double AutoRefreshInterval
         {
             get => _autoRefreshInverval;

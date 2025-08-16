@@ -41,42 +41,36 @@ namespace XIVUniPF.Views
 
         public async void FetchParties()
         {
+            ViewModel.IsLoading = true;
+            ViewModel.LoadingProgress = 0;
             try
             {
-                var option = new PFService.Option
-                {
-                    Page = 1,
-                    PerPage = 100,
-                    Category = string.Empty,
-                    World = string.Empty,
-                    Search = string.Empty,
-                    Datacenter = string.Empty
-                };
-                ViewModel.IsLoading = true;
-                ViewModel.LoadingProgress = 0;
-
                 await PFService.Instance.Update(
-                    option,
                     delta => Dispatcher.Invoke(() => ViewModel.LoadingProgress += delta),
                     App.Config.UseSystemProxy
                 );
             }
-            catch (Exception)
+            finally
             {
                 ViewModel.IsLoading = false;
             }
         }
 
+        // 更新可能在定时器线程触发
+        // 所以封送到 UI 线程进行更新
         public void OnPartyFinderUpdate(PFService sender)
         {
             var result = sender.GetParties();
-            ViewModel.Parties.Replace(result.Data);
-            ViewModel.IsLoading = false;
+            Dispatcher.Invoke(() =>
+            {
+                ViewModel.Parties.Replace(result.Data);
+                ViewModel.IsLoading = false;
+            });
         }
 
         // 对本地招募标记为橙色
         // 用了一种比较 dirty 的实现
-        // 如果能用 Binding + Converter实现会更好
+        // 如果能用 Binding + Converter 实现会更好
         private void DutyName_Loaded(object sender, RoutedEventArgs e)
         {
             var s = (Wpf.Ui.Controls.TextBlock)sender;
@@ -130,7 +124,7 @@ namespace XIVUniPF.Views
             _isComposing = false;
         }
 
-        private void SearchBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_isComposing) return;
 

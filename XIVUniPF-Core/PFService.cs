@@ -96,10 +96,17 @@ namespace XIVUniPF_Core
         /// <param name="option">选项</param>
         /// <param name="progressCallback">进度更新时的回调函数 float为进度条增量</param>
         /// <returns></returns>
-        public async Task Update(Option option, Action<float>? progressCallback = null, bool useProxy = true)
+        public async Task Update(Action<float>? progressCallback = null, bool useProxy = true)
         {
-            option.Page = 1;
-            option.PerPage = 100;
+            var option = new Option
+            {
+                Page = 1,
+                PerPage = 100,
+                Category = string.Empty,
+                World = string.Empty,
+                Search = string.Empty,
+                Datacenter = string.Empty
+            };
 
             // 先发一个请求，知道总共有多少页
             PartyList result = await Fetch(option, useProxy);
