@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using XIVUniPF.Classes;
-using XIVUniPF.Views;
 
 namespace XIVUniPF.ViewModels
 {
@@ -11,20 +10,7 @@ namespace XIVUniPF.ViewModels
     {
         public ICommand ShowWindowCommand
         {
-            get => new BasicCommand(() =>
-                {
-                    var window = Application.Current.MainWindow;
-                    if (window == null || window is not MainWindow)
-                    {
-                        window = Application.Current.MainWindow = new MainWindow();
-                        window.Show();
-                        return;
-                    }
-                    if (window.WindowState == WindowState.Minimized)
-                        window.WindowState = WindowState.Normal;
-                    window.Activate();
-                }
-            );
+            get => new BasicCommand(App.ShowMainWindow);
         }
 
         public ICommand ExitCommand
