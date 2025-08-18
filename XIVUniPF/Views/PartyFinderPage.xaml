@@ -335,7 +335,8 @@
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                 Text="{Binding Path=Description, Mode=OneTime}"
                                 TextTrimming="WordEllipsis"
-                                MaxHeight="60"/>
+                                MaxHeight="60"
+                                FontFamily="pack://application:,,,/XIVUniPF;component/Assets/#更纱黑体 UI SC, pack://application:,,,/XIVUniPF;component/Assets/#XIV AXIS Std ATK"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

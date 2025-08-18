@@ -36,9 +36,9 @@
     <None Remove="Assets\DutyIcons\treasurehunt.png" />
     <None Remove="Assets\DutyIcons\trials.png" />
     <None Remove="Assets\DutyIcons\weeklybingo.png" />
+    <None Remove="Assets\FFXIV_Lodestone_SSF.ttf" />
     <None Remove="Assets\PartyFinder%401x.png" />
     <None Remove="Assets\PartyFinder%402x.png" />
-    <None Remove="Assets\SegoeIcons.TTF" />
   </ItemGroup>
 
   <ItemGroup>
@@ -113,9 +113,11 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Resource Include="Assets\FFXIV_Lodestone_SSF.ttf" />
 	<Resource Include="Assets\PartyFinder@1x.png" />
     <Resource Include="Assets\PartyFinder@2x.png" />
-    <Resource Include="Assets\SegoeIcons.TTF" />
+    <Resource Include="Assets\Sarasa_Gothic_UI_SC.TTF" />
+    <Resource Include="Assets\Segoe_Icons.TTF" />
   </ItemGroup>
 
   <ItemGroup>
