@@ -1,4 +1,4 @@
-﻿<Page 
+<Page 
     x:Class="XIVUniPF.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -75,6 +75,7 @@
                 </controls:SettingPresenter.Resources>
                 <ComboBox 
                     ItemsSource="{StaticResource ThemeList}"
+                    d:SelectedIndex="0"
                     SelectedIndex="{Binding Source={x:Static root:App.Config}, Path=ThemeIndex}"
                     SelectionChanged="Theme_SelectionChanged">
                     <ComboBox.ItemTemplate>
@@ -93,6 +94,7 @@
                 Title="后台运行"
                 Subtitle="允许应用窗口关闭后在托盘继续运行">
                 <ui:ToggleSwitch
+                    d:IsChecked="False"
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=TrayEnabled}"/>
             </controls:SettingPresenter>
             <!-- 使用代理 -->
@@ -100,8 +102,9 @@
                 Margin="{StaticResource VerticalPanelSpacing}"
                 Symbol="VirtualNetwork20"
                 Title="使用代理"
-                Subtitle="发出网络请求时使用系统代理">
+                Subtitle="获取招募数据时使用系统代理">
                 <ui:ToggleSwitch
+                    d:IsChecked="False"
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=UseSystemProxy}"/>
             </controls:SettingPresenter>
             <!-- 更新检查 -->
@@ -111,7 +114,17 @@
                 Title="自动检查更新"
                 Subtitle="发现新版本时发送通知">
                 <ui:ToggleSwitch
+                    d:IsChecked="False"
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=AutoCheckUpdates}"/>
+            </controls:SettingPresenter>
+            <controls:SettingPresenter
+                Margin="{StaticResource VerticalPanelSpacing}"
+                Symbol="VirtualNetwork20"
+                Title="更新使用代理"
+                Subtitle="连接GitHub检查更新时使用系统代理">
+                <ui:ToggleSwitch
+                    d:IsChecked="False"
+                    IsChecked="{Binding Source={x:Static root:App.Config}, Path=UseSystemProxyCheckUpdates}"/>
             </controls:SettingPresenter>
             <!-- 自动刷新 -->
             <controls:SettingPresenter
@@ -121,6 +134,7 @@
                 Title="自动刷新"
                 Subtitle="窗口在后台时按间隔自动刷新招募">
                 <ui:ToggleSwitch
+                    d:IsChecked="False"
                     IsChecked="{Binding Source={x:Static root:App.Config}, Path=AutoRefresh}"/>
             </controls:SettingPresenter>
             <controls:SettingPresenter
@@ -133,6 +147,7 @@
                     Maximum="300"
                     Minimum="60"
                     TickFrequency="1"
+                    d:Value="120"
                     Value="{Binding Source={x:Static root:App.Config}, Path=AutoRefreshInterval}"
                     AutoToolTipPlacement="TopLeft">
                 </Slider>

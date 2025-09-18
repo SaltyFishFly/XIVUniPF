@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -42,7 +42,7 @@ namespace XIVUniPF.Classes
                 // 从 GitHub API 获取最新 release
                 var handler = new HttpClientHandler
                 {
-                    UseProxy = App.Config.UseSystemProxy
+                    UseProxy = App.Config.UseSystemProxyCheckUpdates
                 };
                 using var http = new HttpClient(handler);
                 http.DefaultRequestHeaders.UserAgent.ParseAdd("XIVUniPF-Updater");

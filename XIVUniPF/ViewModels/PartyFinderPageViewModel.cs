@@ -1,14 +1,18 @@
-﻿using System.Collections.ObjectModel;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using XIVUniPF.Classes;
 using XIVUniPF.Classes.Filters;
+using XIVUniPF_Core;
 
 namespace XIVUniPF.ViewModels
 {
     public class PartyFinderPageViewModel : INotifyPropertyChanged
     {
+        private IPFService _pfService;
+
         private bool _isLoading;
 
         private float _loadingProgress;
@@ -84,6 +88,8 @@ namespace XIVUniPF.ViewModels
             // init
             IsLoading = true;
             LoadingProgress = 0;
+
+            _pfService = App.Current.Services.GetRequiredService<IPFService>();
             _parties = [];
             _sortOptions = new ObservableCollection<PartySortOption>(
                 from field in typeof(PartySortOptions).GetFields(BindingFlags.Public | BindingFlags.Static)
@@ -103,6 +109,53 @@ namespace XIVUniPF.ViewModels
                 Notify(nameof(IsPrevButtonEnabled));
                 Notify(nameof(IsNextButtonEnabled));
             };
+
+            _pfService.OnPartyFinderUpdate += OnPartyFinderUpdate;
+        }
+
+        ~PartyFinderPageViewModel()
+        {
+            _pfService.OnPartyFinderUpdate -= OnPartyFinderUpdate;
+        }
+
+        public async Task GetParties()
+        {
+            var parties = _pfService.GetParties();
+            if (parties.Data.Count != 0)
+            {
+                _parties.Replace(parties.Data);
+                IsLoading = false;
+            }
+            else await Refresh();
+        }
+
+        public async Task Refresh()
+        {
+            IsLoading = true;
+            LoadingProgress = 0;
+            try
+            {
+                await _pfService.Refresh(
+                    delta => App.Current.Dispatcher.BeginInvoke(() => LoadingProgress += delta),
+                    App.Config.UseSystemProxy
+                );
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        private void OnPartyFinderUpdate(IPFService sender)
+        {
+            var parties = sender.GetParties();
+            // 更新可能在其它线程触发
+            // 所以封送到 UI 线程进行更新
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                _parties.Replace(parties.Data);
+                IsLoading = false;
+            });
         }
 
         // 实现接口

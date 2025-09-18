@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using YamlDotNet.Serialization;
@@ -6,7 +6,8 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace XIVUniPF.Classes
 {
-    public class YamlConfigManager<T> where T : new()
+    public class YamlConfigManager<T>
+        where T : new()
     {
         private readonly string path;
         private readonly ISerializer serializer;
@@ -15,6 +16,7 @@ namespace XIVUniPF.Classes
         public YamlConfigManager(string filePath)
         {
             path = filePath;
+
             serializer = new SerializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
@@ -85,6 +87,20 @@ namespace XIVUniPF.Classes
                 if (_useSystemProxy != value)
                 {
                     _useSystemProxy = value;
+                    Notify();
+                }
+            }
+        }
+
+        private bool _useSystemProxyCheckUpdates = true;
+        public bool UseSystemProxyCheckUpdates
+        {
+            get => _useSystemProxyCheckUpdates;
+            set
+            {
+                if (_useSystemProxyCheckUpdates != value)
+                {
+                    _useSystemProxyCheckUpdates = value;
                     Notify();
                 }
             }

@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -22,50 +22,7 @@ namespace XIVUniPF.Views
         public PartyFinderPage()
         {
             InitializeComponent();
-
-            PFService.Instance.OnPartyFinderUpdate += OnPartyFinderUpdate;
-
-            var parties = PFService.Instance.GetParties();
-            if (parties.Data.Count != 0)
-            {
-                ViewModel.Parties.Replace(parties.Data);
-                ViewModel.IsLoading = false;
-            }
-            else FetchParties();
-        }
-
-        ~PartyFinderPage()
-        {
-            PFService.Instance.OnPartyFinderUpdate -= OnPartyFinderUpdate;
-        }
-
-        public async void FetchParties()
-        {
-            ViewModel.IsLoading = true;
-            ViewModel.LoadingProgress = 0;
-            try
-            {
-                await PFService.Instance.Update(
-                    delta => Dispatcher.Invoke(() => ViewModel.LoadingProgress += delta),
-                    App.Config.UseSystemProxy
-                );
-            }
-            finally
-            {
-                ViewModel.IsLoading = false;
-            }
-        }
-
-        // 更新可能在定时器线程触发
-        // 所以封送到 UI 线程进行更新
-        public void OnPartyFinderUpdate(PFService sender)
-        {
-            var result = sender.GetParties();
-            Dispatcher.Invoke(() =>
-            {
-                ViewModel.Parties.Replace(result.Data);
-                ViewModel.IsLoading = false;
-            });
+            _ = ViewModel.GetParties();
         }
 
         // 对本地招募标记为橙色
@@ -82,7 +39,7 @@ namespace XIVUniPF.Views
         // 控件事件
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
         {
-            FetchParties();
+            _ = ViewModel.Refresh();
         }
 
         private void Prev_Button_Click(object sender, RoutedEventArgs e)
@@ -144,7 +101,7 @@ namespace XIVUniPF.Views
 
         private void Refresh_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            FetchParties();
+            _ = ViewModel.Refresh();
             e.Handled = true;
         }
     }

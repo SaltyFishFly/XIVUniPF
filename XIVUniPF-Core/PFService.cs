@@ -1,10 +1,11 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using static XIVUniPF_Core.IPFService;
 
 namespace XIVUniPF_Core
 {
-    public class PFService : IPFDataSource
+    public class PFService : IPFService
     {
         public struct Option
         {
@@ -41,10 +42,7 @@ namespace XIVUniPF_Core
         // static
         private static readonly string Server = "https://xivpf.littlenightmare.top/";
 
-        public static PFService Instance => _instance.Value;
-
-        // 懒加载
-        private static readonly Lazy<PFService> _instance = new(() => new PFService());
+        private static readonly string UserAgent = "XIVUniPF-Core 1.1 (contact: gfishfly@qq.com)";
 
         private static readonly JsonSerializerOptions defaultOptions = new()
         {
@@ -53,11 +51,10 @@ namespace XIVUniPF_Core
         };
 
         // members
-        public delegate void PartyFinderUpdateEventHandler(PFService sender);
-
         public event PartyFinderUpdateEventHandler? OnPartyFinderUpdate;
 
         private readonly HttpClient clientProxy;
+
         private readonly HttpClient client;
 
         private PartyList parties;
@@ -72,13 +69,13 @@ namespace XIVUniPF_Core
             {
                 BaseAddress = new Uri(Server)
             };
-            client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.1 (contact: gfishfly@qq.com)");
+            client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
             clientProxy = new HttpClient()
             {
                 BaseAddress = new Uri(Server)
             };
-            client.DefaultRequestHeaders.Add("User-Agent", "XIVUniPF-Core 1.1 (contact: gfishfly@qq.com)");
+            client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
             parties = new PartyList();
         }
@@ -96,7 +93,7 @@ namespace XIVUniPF_Core
         /// <param name="option">选项</param>
         /// <param name="progressCallback">进度更新时的回调函数 float为进度条增量</param>
         /// <returns></returns>
-        public async Task Update(Action<float>? progressCallback = null, bool useProxy = true)
+        public async Task Refresh(Action<float>? progressCallback = null, bool useProxy = true)
         {
             var option = new Option
             {

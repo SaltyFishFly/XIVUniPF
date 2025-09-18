@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using Wpf.Ui.Controls;
@@ -56,7 +56,7 @@ namespace XIVUniPF.Views
                 {
                     From = new Thickness(0, 50, 0, -50),
                     To = new Thickness(0),
-                    Duration = TimeSpan.FromMilliseconds(200),
+                    Duration = TimeSpan.FromMilliseconds(250),
                     EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
                 };
 

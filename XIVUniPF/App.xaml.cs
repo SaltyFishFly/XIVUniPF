@@ -1,4 +1,6 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+using Hardcodet.Wpf.TaskbarNotification;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
@@ -13,35 +15,61 @@ namespace XIVUniPF
     {
         public static readonly string Version = "v0.2.1";
 
+
+        public new static App Current => (App)Application.Current;
+
+        public static AppConfig Config => Current._config!;
+
         private static Mutex? _processMutex;
-        public static AppConfig Config => ((App)Current)._config!;
+
+
+        public IServiceProvider Services => host!.Services;
+
 
         private YamlConfigManager<AppConfig>? configManager;
+
         private AppConfig? _config;
+
         private TaskbarIcon? trayIcon;
+
         private Timer? refreshTimer;
+
         private PipeIPC? ipc;
+
+        private IHost? host;
+
+
+        public static void ShowMainWindow()
+        {
+            Current.Dispatcher.Invoke(() =>
+            {
+                var window = Current.MainWindow;
+                // 在 Debug 模式中 window 可能不是 MainWindow 而是 VS 的辅助窗口
+                // 所以作出特判
+                if (window == null || window is not Views.MainWindow)
+                {
+                    window = Current.MainWindow = new MainWindow();
+                    window.Show();
+                    return;
+                }
+                if (window.WindowState == WindowState.Minimized)
+                    window.WindowState = WindowState.Normal;
+                window.Activate();
+            });
+        }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            // 确保单例运行
-            ipc = new PipeIPC("XIVUniPF_IPC");
-            _processMutex = new Mutex(true, "XIVUniPFApp", out bool success);
-            if (!success)
-            {
-                // 唤醒后台运行的实例
-                await ipc.SendMessageAsync("show");
-                Shutdown();
-                Environment.Exit(0);
-            }
-            ipc.StartServer();
-            ipc.MessageReceived += (msg) =>
-            {
-                if (msg == "show")
-                    App.ShowMainWindow();
-            };
+            await EnsureAppSingleton();
+            
+            host = Host.CreateDefaultBuilder()
+                .ConfigureServices(builder =>
+                {
+                    builder.AddSingleton<IPFService, PFService>();
+                })
+                .Build();
 
             // 加载设置
             string cfgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.yaml");
@@ -76,7 +104,7 @@ namespace XIVUniPF
                         window.Opacity == 0;
                 });
                 if (Config.AutoRefresh && notVisible)
-                    _ = PFService.Instance.Update();
+                    _ = Services.GetRequiredService<IPFService>().Refresh();
             }, null, TimeSpan.FromSeconds(Config.AutoRefreshInterval), TimeSpan.FromSeconds(Config.AutoRefreshInterval));
             Config.PropertyChanged += (s, e) =>
             {
@@ -87,23 +115,25 @@ namespace XIVUniPF
             Current.StartupUri = new Uri("Views/MainWindow.xaml", UriKind.Relative);
         }
 
-        public static void ShowMainWindow()
+        // 确保App单例运行
+        // 如果后台已有实例运行则唤醒它
+        private async Task EnsureAppSingleton()
         {
-            Current.Dispatcher.Invoke(() =>
+            ipc = new PipeIPC("XIVUniPF_IPC");
+            _processMutex = new Mutex(true, "XIVUniPFApp", out bool success);
+            // 加锁失败，说明已有实例运行
+            if (!success)
             {
-                var window = Current.MainWindow;
-                // 在 Debug 模式中 window 可能不是 MainWindow 而是 VS 的辅助窗口
-                // 所以作出特判
-                if (window == null || window is not Views.MainWindow)
-                {
-                    window = Current.MainWindow = new MainWindow();
-                    window.Show();
-                    return;
-                }
-                if (window.WindowState == WindowState.Minimized)
-                    window.WindowState = WindowState.Normal;
-                window.Activate();
-            });
+                await ipc.SendMessageAsync("show");
+                Shutdown();
+                Environment.Exit(0);
+            }
+            ipc.StartServer();
+            ipc.MessageReceived += (msg) =>
+            {
+                if (msg == "show")
+                    ShowMainWindow();
+            };
         }
 
         protected override void OnExit(ExitEventArgs e)
