@@ -108,6 +108,11 @@ namespace XIVUniPF_Core
             // 先发一个请求，知道总共有多少页
             PartyList result = await Fetch(option, useProxy);
             var pages = result.Pagination.Total_pages;
+            if (pages == 0)
+            {
+                parties = result;
+                return;
+            }
             progressCallback?.Invoke(100f / pages);
 
             // 请求剩下的页

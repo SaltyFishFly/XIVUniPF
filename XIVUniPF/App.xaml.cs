@@ -1,6 +1,5 @@
 using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
@@ -23,7 +22,7 @@ namespace XIVUniPF
         private static Mutex? _processMutex;
 
 
-        public IServiceProvider Services => host!.Services;
+        public IServiceProvider Services => services!;
 
 
         private YamlConfigManager<AppConfig>? configManager;
@@ -36,7 +35,7 @@ namespace XIVUniPF
 
         private PipeIPC? ipc;
 
-        private IHost? host;
+        private IServiceProvider? services;
 
 
         public static void ShowMainWindow()
@@ -63,13 +62,10 @@ namespace XIVUniPF
             base.OnStartup(e);
 
             await EnsureAppSingleton();
-            
-            host = Host.CreateDefaultBuilder()
-                .ConfigureServices(builder =>
-                {
-                    builder.AddSingleton<IPFService, PFService>();
-                })
-                .Build();
+
+            services = new ServiceCollection()
+                .AddSingleton<IPFService, PFService>()
+                .BuildServiceProvider();
 
             // 加载设置
             string cfgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.yaml");

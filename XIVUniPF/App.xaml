@@ -1,4 +1,4 @@
-﻿<Application
+<Application
     x:Class="XIVUniPF.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,21 +20,21 @@
                 <ui:ThemesDictionary Theme="Light"/>
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
-            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
             <tb:TaskbarIcon
                 x:Key="Taskbar"
                 Visibility="{Binding Source={x:Static local:App.Config}, Path=TrayEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
                 ToolTipText="XIVUniPF"
                 IconSource="pack://application:,,,/Assets/PartyFinder@1x.png"
-                LeftClickCommand="{Binding Path=ShowWindowCommand}"
+                LeftClickCommand="{Binding Path=ShowMainWindowCommand}"
                 NoLeftClickDelay="True">
                 <tb:TaskbarIcon.DataContext>
                     <vm:TrayIconViewModel />
                 </tb:TaskbarIcon.DataContext>
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="显示窗口" Command="{Binding ShowWindowCommand}" />
+                        <MenuItem Header="显示窗口" Command="{Binding ShowMainWindowCommand}" />
                         <Separator />
                         <MenuItem Header="退出" Command="{Binding ExitCommand}" />
                     </ContextMenu>

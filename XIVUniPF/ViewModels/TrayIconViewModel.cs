@@ -1,21 +1,22 @@
-﻿using System.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Input;
-using XIVUniPF.Classes;
 
 namespace XIVUniPF.ViewModels
 {
-    public class TrayIconViewModel : INotifyPropertyChanged
+    public partial class TrayIconViewModel : INotifyPropertyChanged
     {
-        public ICommand ShowWindowCommand
+
+        [RelayCommand]
+        public void ShowMainWindow()
         {
-            get => new BasicCommand(App.ShowMainWindow);
+            App.ShowMainWindow();
         }
 
-        public ICommand ExitCommand
+        [RelayCommand]
+        public void Exit()
         {
-            get => new BasicCommand(Application.Current.Shutdown);
+            App.Current.Shutdown();
         }
 
         // 实现接口

@@ -1,4 +1,4 @@
-﻿<Page 
+<Page 
     x:Class="XIVUniPF.Views.PartyFinderPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,8 +15,7 @@
     Title="PartyFinderView"
     DataContext="{DynamicResource ViewModel}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}">
-    <!-- 草你妈的傻逼微软 Page中的TextBlock不会响应主题更改 Debug了我三个小时 -->
-    <!-- 先用这个workaround一下 微软的傻逼狗屎框架 发布十几年后还能有1.3k个issue -->
+
     <Page.Resources>
         <vm:PartyFinderPageViewModel x:Key="ViewModel" />
         <!-- 快捷键 -->
@@ -37,7 +36,7 @@
 
     <Grid>
         <Grid.Resources>
-            <conv:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
+            <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
         </Grid.Resources>
         
         <Grid.ColumnDefinitions>
@@ -113,6 +112,7 @@
             <!-- 前进 -->
             <ui:Button
                 DockPanel.Dock="Right"
+                MaxWidth="100"
                 Height="{Binding Path=ActualHeight, ElementName=Toolbar}"
                 Margin="{StaticResource HorizontalPanelSpacing}"
                 TabIndex="3"
