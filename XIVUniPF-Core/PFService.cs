@@ -102,7 +102,7 @@ namespace XIVUniPF_Core
                 Category = string.Empty,
                 World = string.Empty,
                 Search = string.Empty,
-                Datacenter = string.Empty
+                Datacenter = "陆行鸟,莫古力,猫小胖,豆豆柴"
             };
 
             // 先发一个请求，知道总共有多少页

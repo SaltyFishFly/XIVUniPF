@@ -178,7 +178,7 @@
             Margin="{StaticResource VerticalPanelSpacingEnd}"
             Visibility="{Binding Path=Loaded, Converter={StaticResource VisibilityConverter}}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            VirtualizingPanel.VirtualizationMode="Recycling"
+            VirtualizingPanel.VirtualizationMode="Standard"
             VirtualizingPanel.ScrollUnit="Pixel"
             ItemsSource="{Binding Path=Parties, Mode=OneWay}">
             <ui:ListView.Resources>
