@@ -152,15 +152,15 @@ namespace XIVUniPF_Core
                           .Append($"&per_page={option.PerPage}");
                 if (option.Category != string.Empty)
                     endpoint.Append($"&category={Uri.EscapeDataString(option.Category)}");
-                if (option.Category != string.Empty)
+                if (option.World != string.Empty)
                     endpoint.Append($"&world={Uri.EscapeDataString(option.World)}");
-                if (option.Category != string.Empty)
+                if (option.Search != string.Empty)
                     endpoint.Append($"&search={Uri.EscapeDataString(option.Search)}");
-                if (option.Category != string.Empty)
+                if (option.Datacenter != string.Empty)
                     endpoint.Append($"&datacenter={Uri.EscapeDataString(option.Datacenter)}");
-                if (option.Category != string.Empty)
+                if (option.Jobs != string.Empty)
                     endpoint.Append($"&jobs={Uri.EscapeDataString(option.Jobs)}");
-                if (option.Category != string.Empty)
+                if (option.Duty != string.Empty)
                     endpoint.Append($"&duty={Uri.EscapeDataString(option.Duty)}");
 
                 var url = endpoint.ToString();
